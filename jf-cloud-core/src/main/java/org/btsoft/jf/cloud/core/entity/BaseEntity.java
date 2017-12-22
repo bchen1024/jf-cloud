@@ -1,40 +1,46 @@
 package org.btsoft.jf.cloud.core.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
+@DynamicInsert
+@DynamicUpdate
 public class BaseEntity implements Serializable {
 
     /**
      * 有效标识
      */
-    @Column
+    @Column(name = "enable_flag")
     private String enableFlag;
 
     /**
      * 创建人id
      */
+    @Column(name = "create_id")
     private Long createId;
 
     /**
      * 创建时间
      */
-    @Column
+    @Column(name = "creation_date")
     private Date creationDate;
 
     /**
      * 最后更新人id
      */
-    @Column
+    @Column(name = "last_update_id")
     private Long lastUpdateId;
 
     /**
      * 最后更新时间
      */
-    @Column
+    @Column(name = "last_updation_date")
     private Date lastUpdationDate;
 
     public String getEnableFlag() {

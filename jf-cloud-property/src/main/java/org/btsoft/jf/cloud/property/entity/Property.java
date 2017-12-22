@@ -1,11 +1,15 @@
 package org.btsoft.jf.cloud.property.entity;
 
 import org.btsoft.jf.cloud.core.entity.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="sys_property_t")
+@DynamicInsert
+@DynamicUpdate
 public class Property extends BaseEntity{
 
     @Id
@@ -13,11 +17,11 @@ public class Property extends BaseEntity{
     @Column(name="id")
     private Long id;
 
-    @Column(name="key")
-    private String key;
+    @Column(name="property_key")
+    private String propertyKey;
 
-    @Column(name="value")
-    private String value;
+    @Column(name="property_value")
+    private String propertyValue;
 
     public Long getId() {
         return id;
@@ -27,19 +31,19 @@ public class Property extends BaseEntity{
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getPropertyKey() {
+        return propertyKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setPropertyKey(String propertyKey) {
+        this.propertyKey = propertyKey;
     }
 
-    public String getValue() {
-        return value;
+    public String getPropertyValue() {
+        return propertyValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setPropertyValue(String propertyValue) {
+        this.propertyValue = propertyValue;
     }
 }
