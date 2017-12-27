@@ -17,8 +17,8 @@ public class SwaggerConfig {
 
     @Bean
     public Docket apiDocket(){
-        ApiInfo apiInfo=new ApiInfoBuilder().title("JF CLoud API")
-                .description("JF Cloud Property API")
+        ApiInfo apiInfo=new ApiInfoBuilder().title("JF CLoud 数据字典")
+                .description("JF CLoud 数据字典微服务API中心")
                 .termsOfServiceUrl("").version("1.0")
                 .contact(new Contact("bchen","","")).build();
         Predicate<RequestHandler> apiSelector= RequestHandlerSelectors

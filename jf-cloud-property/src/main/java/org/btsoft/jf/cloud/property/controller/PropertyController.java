@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
 @RestController
 @RequestMapping("/property")
 public class PropertyController {
@@ -14,7 +13,7 @@ public class PropertyController {
     @Autowired
     private IPropertyService service;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/",method = RequestMethod.POST)
     public Property add(@RequestBody Property property){
         return service.add(property);
     }

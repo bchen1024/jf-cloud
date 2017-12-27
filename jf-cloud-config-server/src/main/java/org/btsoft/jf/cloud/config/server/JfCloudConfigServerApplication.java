@@ -1,17 +1,16 @@
-package org.btsoft.jf.cloud.property;
+package org.btsoft.jf.cloud.config.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-@EnableSwagger2
+@EnableConfigServer
 @EnableDiscoveryClient
-public class JfCloudPropertyApplication {
+public class JfCloudConfigServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JfCloudPropertyApplication.class, args);
+		SpringApplication.run(JfCloudConfigServerApplication.class, args);
 	}
 }

@@ -1,1 +1,10 @@
 .idea
+/jf-cloud-config-server/.mvn/wrapper/maven-wrapper.jar
+/jf-cloud-config-server/.mvn/wrapper/maven-wrapper.properties
+/jf-cloud-config-server/mvnw
+/jf-cloud-config-server/mvnw.cmd
+/jf-cloud-core/.mvn/wrapper/.gitignore
+/jf-cloud-eureka-server/.mvn/wrapper/maven-wrapper.jar
+/jf-cloud-eureka-server/.mvn/wrapper/maven-wrapper.properties
+/jf-cloud-eureka-server/mvnw
+/jf-cloud-eureka-server/mvnw.cmd
