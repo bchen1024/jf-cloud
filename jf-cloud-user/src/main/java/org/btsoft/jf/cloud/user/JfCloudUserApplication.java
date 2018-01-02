@@ -1,4 +1,4 @@
-package org.btsoft.jf.cloud.property;
+package org.btsoft.jf.cloud.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,13 +6,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
 @SpringBootApplication
 @EnableSwagger2
 @EnableDiscoveryClient
-public class JfCloudPropertyApplication {
+@EnableZuulProxy
+public class JfCloudUserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JfCloudPropertyApplication.class, args);
+		SpringApplication.run(JfCloudUserApplication.class, args);
 	}
 }

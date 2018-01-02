@@ -13,7 +13,7 @@ public class PropertyController {
     @Autowired
     private IPropertyService service;
 
-    @RequestMapping(value="/",method = RequestMethod.POST)
+    @RequestMapping(value="",method = RequestMethod.POST)
     public Property add(@RequestBody Property property){
         return service.add(property);
     }
