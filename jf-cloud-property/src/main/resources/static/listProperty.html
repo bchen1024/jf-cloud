@@ -14,8 +14,14 @@
                 container:"propertyPanel",
                 rows:[
                     {cols:[
-                        {view:"button",label:"添加"},{}
-                        ]}
+                            {view:"button",label:"添加"},{}
+                        ]
+                    },
+                    {view:"datatable",columns:[
+                            {id:"propertyKey",title:"propertyKey"},
+                            {id:"propertyValue",title:"propertyValue"}
+                        ]
+                    }
                 ]
             });
         });

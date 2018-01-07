@@ -1,47 +1,44 @@
 package org.btsoft.jf.cloud.core.entity;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
 
-@MappedSuperclass
-@DynamicInsert
-@DynamicUpdate
 public class BaseEntity implements Serializable {
 
     /**
      * 有效标识
      */
-    @Column(name = "enable_flag")
     private String enableFlag;
 
     /**
      * 创建人id
      */
-    @Column(name = "create_id")
-    private Long createId;
+    private Long createBy;
 
     /**
      * 创建时间
      */
-    @Column(name = "creation_date")
     private Date creationDate;
 
     /**
      * 最后更新人id
      */
-    @Column(name = "last_update_id")
-    private Long lastUpdateId;
+    private Long lastUpdateBy;
 
     /**
      * 最后更新时间
      */
-    @Column(name = "last_updation_date")
     private Date lastUpdationDate;
+
+    /**
+     * 应用编码
+     */
+    private String appCode;
+
+    /**
+     * 当前用户id
+     */
+    private Long currentUserId;
 
     public String getEnableFlag() {
         return enableFlag;
@@ -51,12 +48,12 @@ public class BaseEntity implements Serializable {
         this.enableFlag = enableFlag;
     }
 
-    public Long getCreateId() {
-        return createId;
+    public Long getCreateBy() {
+        return createBy;
     }
 
-    public void setCreateId(Long createId) {
-        this.createId = createId;
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
     }
 
     public Date getCreationDate() {
@@ -67,12 +64,12 @@ public class BaseEntity implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Long getLastUpdateId() {
-        return lastUpdateId;
+    public Long getLastUpdateBy() {
+        return lastUpdateBy;
     }
 
-    public void setLastUpdateId(Long lastUpdateId) {
-        this.lastUpdateId = lastUpdateId;
+    public void setLastUpdateBy(Long lastUpdateBy) {
+        this.lastUpdateBy = lastUpdateBy;
     }
 
     public Date getLastUpdationDate() {
@@ -81,5 +78,21 @@ public class BaseEntity implements Serializable {
 
     public void setLastUpdationDate(Date lastUpdationDate) {
         this.lastUpdationDate = lastUpdationDate;
+    }
+
+    public String getAppCode() {
+        return appCode;
+    }
+
+    public void setAppCode(String appCode) {
+        this.appCode = appCode;
+    }
+
+    public Long getCurrentUserId() {
+        return currentUserId;
+    }
+
+    public void setCurrentUserId(Long currentUserId) {
+        this.currentUserId = currentUserId;
     }
 }
