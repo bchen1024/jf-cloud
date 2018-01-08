@@ -16,6 +16,11 @@ public class BaseEntity implements Serializable {
     private Long createBy;
 
     /**
+     * 创建人名称
+     */
+    private String createUserName;
+
+    /**
      * 创建时间
      */
     private Date creationDate;
@@ -26,6 +31,11 @@ public class BaseEntity implements Serializable {
     private Long lastUpdateBy;
 
     /**
+     * 最后更新人名称
+     */
+    private String lastUpdateUserName;
+
+    /**
      * 最后更新时间
      */
     private Date lastUpdationDate;
@@ -34,11 +44,6 @@ public class BaseEntity implements Serializable {
      * 应用编码
      */
     private String appCode;
-
-    /**
-     * 当前用户id
-     */
-    private Long currentUserId;
 
     public String getEnableFlag() {
         return enableFlag;
@@ -56,6 +61,14 @@ public class BaseEntity implements Serializable {
         this.createBy = createBy;
     }
 
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -70,6 +83,14 @@ public class BaseEntity implements Serializable {
 
     public void setLastUpdateBy(Long lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
+    }
+
+    public String getLastUpdateUserName() {
+        return lastUpdateUserName;
+    }
+
+    public void setLastUpdateUserName(String lastUpdateUserName) {
+        this.lastUpdateUserName = lastUpdateUserName;
     }
 
     public Date getLastUpdationDate() {
@@ -89,10 +110,7 @@ public class BaseEntity implements Serializable {
     }
 
     public Long getCurrentUserId() {
-        return currentUserId;
+        return -1L;
     }
 
-    public void setCurrentUserId(Long currentUserId) {
-        this.currentUserId = currentUserId;
-    }
 }

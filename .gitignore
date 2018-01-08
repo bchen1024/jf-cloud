@@ -1,4 +1,17 @@
 .idea
+.idea/
+.DS_Store
+node_modules/
+.project
+dist
+dist/*
+src/config/*.tmp
+src/config/env.js
+npm-debug.log
+/jf-cloud-app/.mvn/wrapper/maven-wrapper.jar
+/jf-cloud-app/.mvn/wrapper/maven-wrapper.properties
+/jf-cloud-app/mvnw
+/jf-cloud-app/mvnw.cmd
 /jf-cloud-config-server/.mvn/wrapper/maven-wrapper.jar
 /jf-cloud-config-server/.mvn/wrapper/maven-wrapper.properties
 /jf-cloud-config-server/mvnw

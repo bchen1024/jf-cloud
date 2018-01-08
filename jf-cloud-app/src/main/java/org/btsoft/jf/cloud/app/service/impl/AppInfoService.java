@@ -60,4 +60,9 @@ public class AppInfoService implements IAppInfoService {
         }
         return new PageResult<AppInfo>(result,page,total);
     }
+
+    @Override
+    public AppInfo findAppByCode(AppInfo appInfo) {
+        return mapper.findAppByCode(appInfo);
+    }
 }
