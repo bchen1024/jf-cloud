@@ -27,8 +27,7 @@ public class AppInfoController implements IBaseController<AppInfo>{
     @RequestMapping(value="/create",method = RequestMethod.POST)
     @ApiOperation(value = "创建单个应用")
     public AppInfo createSingle(@RequestBody AppInfo appInfo) {
-        service.createSingle(appInfo);
-        return appInfo;
+        return service.createSingle(appInfo);
     }
 
     @Override
@@ -42,16 +41,14 @@ public class AppInfoController implements IBaseController<AppInfo>{
     @RequestMapping(value="/update",method = RequestMethod.PUT)
     @ApiOperation(value = "更新单个应用")
     public AppInfo updateSingle(@RequestBody AppInfo appInfo) {
-        service.updateSingle(appInfo);
-        return appInfo;
+        return service.updateSingle(appInfo);
     }
 
     @Override
     @RequestMapping(value="/delete",method = RequestMethod.DELETE)
     @ApiOperation(value = "删除单个应用")
     public AppInfo deleteSingle(@RequestBody AppInfo appInfo) {
-        service.deleteSingle(appInfo);
-        return appInfo;
+        return service.deleteSingle(appInfo);
     }
 
     @Override

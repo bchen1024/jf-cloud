@@ -19,7 +19,7 @@ public class AppInfoService implements IAppInfoService {
 
     @Override
     public AppInfo createSingle(AppInfo appInfo) {
-        int count=mapper.createSingle(appInfo);
+         int count=mapper.createSingle(appInfo);
         if(count>0){
             return this.findSingle(appInfo);
         }

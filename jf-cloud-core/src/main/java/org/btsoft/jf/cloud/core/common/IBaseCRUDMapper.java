@@ -2,7 +2,6 @@ package org.btsoft.jf.cloud.core.common;
 
 import org.apache.ibatis.annotations.Param;
 import org.btsoft.jf.cloud.core.entity.Page;
-import org.btsoft.jf.cloud.core.entity.PageResult;
 
 import java.util.List;
 

@@ -56,10 +56,7 @@
 		</trim>
 	</sql>
 
-	<insert id="createSingle">
-		<selectKey keyProperty="appId" resultType="Long">
-			select last_insert_id()
-		</selectKey>
+	<insert id="createSingle" keyProperty="appId" useGeneratedKeys="true" parameterType="org.btsoft.jf.cloud.app.entity.AppInfo">
 		insert into sys_app_info_t (
 			app_code,
 			app_name,
