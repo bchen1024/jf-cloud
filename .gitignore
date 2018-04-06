@@ -37,3 +37,7 @@ npm-debug.log
 /jf-cloud-zuul/.mvn/wrapper/maven-wrapper.properties
 /jf-cloud-zuul/mvnw
 /jf-cloud-zuul/mvnw.cmd
+/bin/
+/.settings
+/logs
+/target

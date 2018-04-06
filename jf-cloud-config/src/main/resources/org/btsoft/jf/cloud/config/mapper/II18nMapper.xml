@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.config.mapper.II18nMapper">
+	<resultMap id="i18nResultMap" type="org.btsoft.jf.cloud.config.entity.I18n">
+		<result column="app_code" property="appCode"/>
+		<result column="enable_flag" property="enableFlag"/>
+		<result column="create_by" property="createBy"/>
+		<result column="creation_date" property="creationDate"/>
+		<result column="last_update_by" property="lastUpdateBy"/>
+		<result column="last_updation_date" property="lastUpdationDate"/>
+
+		<result column="i18n_id" property="i18nId"/>
+		<result column="i18n_key" property="i18nKey"/>
+		<result column="i18n_cn" property="i18nCN"/>
+		<result column="i18n_en" property="i18nEN"/>
+	</resultMap>
+
+	<sql id="base_sql">
+		select
+			t.i18n_id,
+			t.i18n_key,
+			t.i18n_cn,
+			t.i18n_en,
+			t.app_code,
+			t.enable_flag,
+			t.create_by,
+			t.creation_date,
+			t.last_update_by,
+			t.last_updation_date
+		from sys_i18n_t t
+	</sql>
+
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+		    t.app_code=#{vo.appCode,jdbcType=VARCHAR}
+			<if test='vo.enableFlag!=null and vo.enableFlag!=""'>
+                and t.enable_flag=#{vo.enableFlag,jdbcType=VARCHAR}
+            </if>
+            <if test='vo.createBy!=null and vo.createBy!=""'>
+                and t.create_by=#{vo.createBy,jdbcType=NUMERIC}
+            </if>
+            <if test='vo.lastUpdateBy!=null and vo.lastUpdateBy!=""'>
+                and t.last_update_by=#{vo.lastUpdateBy,jdbcType=NUMERIC}
+            </if>
+            <if test='vo.i18nKey!=null and vo.i18nKey!=""'>
+                and t.i18n_key like concat('%',trim(#{vo.i18nKey,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='vo.i18nCN!=null and vo.i18nCN!=""'>
+                and t.i18n_cn like concat('%',trim(#{vo.i18nCN,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='vo.i18nEN!=null and vo.i18nEN!=""'>
+                and t.i18n_en=#{vo.i18nEN,jdbcType=NUMERIC}
+            </if>
+		</trim>
+	</sql>
+
+	<insert id="createSingle" parameterType="org.btsoft.jf.cloud.config.entity.I18n">
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="i18nId">
+          SELECT LAST_INSERT_ID()
+        </selectKey>
+		insert into sys_i18n_t (
+			i18n_key,
+			i18n_cn,
+			i18n_en,
+			app_code,
+			create_by,
+			last_update_by
+		)values(
+			#{vo.i18nKey,jdbcType=VARCHAR},
+			#{vo.i18nCN,jdbcType=VARCHAR},
+			#{vo.i18nEN,jdbcType=VARCHAR},
+			#{vo.appCode,jdbcType=VARCHAR},
+			#{vo.currentUserId,jdbcType=NUMERIC},
+			#{vo.currentUserId,jdbcType=NUMERIC}
+		)
+	</insert>
+
+    <select id="findSingle" resultMap="i18nResultMap">
+        <include refid="base_sql"/>
+        where t.i18n_id=#{vo.i18nId,jdbcType=NUMERIC}
+    </select>
+
+	<delete id="deleteSingle">
+		delete from sys_i18n_t where i18n_id=#{vo.i18nId,jdbcType=NUMERIC}
+	</delete>
+	
+	<delete id="deleteMultiple">
+		delete from sys_i18n_t where
+		<foreach collection="list" item="item" open=" i18n_id in(" separator="," close=")">
+			#{item.i18nId,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
+
+	<update id="updateSingle">
+		update sys_i18n_t t set
+			t.i18n_key=#{vo.i18nKey,jdbcType=VARCHAR},
+			t.i18n_cn=#{vo.i18nCN,jdbcType=VARCHAR},
+			t.i18n_en=#{vo.i18nEN,jdbcType=VARCHAR},
+			t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+			t.last_updation_date=now()
+		where t.i18n_id=#{vo.i18nId,jdbcType=NUMERIC}
+	</update>
+
+	<select id="findList" resultMap="i18nResultMap">
+		<include refid="base_sql"/>
+		<include refid="base_condition"/>
+	</select>
+
+	<select id="findPageList" resultMap="i18nResultMap">
+		<include refid="base_sql"/>
+		<include refid="base_condition"/>
+		limit #{page.startIndex},#{page.pageSize}
+	</select>
+
+	<select id="findCount" resultType="int">
+		select count(1) from sys_i18n_t t
+		<include refid="base_condition"/>
+	</select>
+
+</mapper>
