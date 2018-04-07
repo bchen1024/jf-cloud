@@ -13,10 +13,10 @@ import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
 @EnableZuulProxy
-public class JfCloudZuulApplication {
+public class CloudZuulApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JfCloudZuulApplication.class, args);
+		SpringApplication.run(CloudZuulApplication.class, args);
 	}
 
 	@Bean

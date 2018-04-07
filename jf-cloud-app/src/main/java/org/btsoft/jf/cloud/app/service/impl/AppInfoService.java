@@ -1,5 +1,8 @@
 package org.btsoft.jf.cloud.app.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.btsoft.jf.cloud.app.entity.AppInfo;
 import org.btsoft.jf.cloud.app.mapper.IAppInfoMapper;
 import org.btsoft.jf.cloud.app.service.IAppInfoService;
@@ -7,9 +10,6 @@ import org.btsoft.jf.cloud.core.entity.Page;
 import org.btsoft.jf.cloud.core.entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AppInfoService implements IAppInfoService {
@@ -45,6 +45,13 @@ public class AppInfoService implements IAppInfoService {
         }
         return app;
     }
+    
+    @Override
+	public void deleteMultiple(List<AppInfo> appInfos) {
+    	if(appInfos!=null && !appInfos.isEmpty()){
+    		mapper.deleteMultiple(appInfos);
+    	}
+	}
 
     @Override
     public List<AppInfo> findList(AppInfo appInfo) {

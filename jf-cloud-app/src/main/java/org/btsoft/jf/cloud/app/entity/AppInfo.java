@@ -7,7 +7,9 @@ import org.btsoft.jf.cloud.core.entity.BaseEntity;
  */
 public class AppInfo extends BaseEntity{
 
-    private Long appId;
+	private static final long serialVersionUID = 4006198318536186373L;
+
+	private Long appId;
 
     private String appName;
 

@@ -7,13 +7,15 @@ import java.util.List;
 
 public interface IBaseCRUDMapper<T> {
 
-    int createSingle(@Param("vo") T t);
+    void createSingle(@Param("vo") T t);
 
     T findSingle(@Param("vo")T t);
 
     int updateSingle(@Param("vo")T t);
 
     int deleteSingle(@Param("vo")T t);
+    
+    void deleteMultiple(@Param("list")List<T> t);
 
     List<T> findList(@Param("vo")T t);
 

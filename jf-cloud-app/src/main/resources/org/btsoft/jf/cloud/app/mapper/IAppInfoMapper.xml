@@ -82,6 +82,13 @@
 	<delete id="deleteSingle">
 		delete from sys_app_info_t where app_id=#{vo.appId,jdbcType=NUMERIC}
 	</delete>
+	
+	<delete id="deleteMultiple">
+		delete from sys_app_info_t where
+		<foreach collection="list" item="item" open=" app_id in(" separator="," close=")">
+			#{item.appId,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
 
 	<update id="updateSingle">
 		update sys_app_info_t t set

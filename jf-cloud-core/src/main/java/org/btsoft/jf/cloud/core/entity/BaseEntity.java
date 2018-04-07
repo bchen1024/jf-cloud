@@ -2,10 +2,14 @@ package org.btsoft.jf.cloud.core.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BaseEntity implements Serializable {
+	
+	private static final long serialVersionUID = -133258962375151449L;
 
-    /**
+	/**
      * 有效标识
      */
     private String enableFlag;
@@ -14,11 +18,6 @@ public class BaseEntity implements Serializable {
      * 创建人id
      */
     private Long createBy;
-
-    /**
-     * 创建人名称
-     */
-    private String createUserName;
 
     /**
      * 创建时间
@@ -31,11 +30,6 @@ public class BaseEntity implements Serializable {
     private Long lastUpdateBy;
 
     /**
-     * 最后更新人名称
-     */
-    private String lastUpdateUserName;
-
-    /**
      * 最后更新时间
      */
     private Date lastUpdationDate;
@@ -44,6 +38,11 @@ public class BaseEntity implements Serializable {
      * 应用编码
      */
     private String appCode;
+    
+    /**
+     * 扩展属性
+     */
+    private Map<String, Object> attribute = new HashMap<>();
 
     public String getEnableFlag() {
         return enableFlag;
@@ -61,14 +60,6 @@ public class BaseEntity implements Serializable {
         this.createBy = createBy;
     }
 
-    public String getCreateUserName() {
-        return createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
     public Date getCreationDate() {
         return creationDate;
     }
@@ -83,14 +74,6 @@ public class BaseEntity implements Serializable {
 
     public void setLastUpdateBy(Long lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
-    }
-
-    public String getLastUpdateUserName() {
-        return lastUpdateUserName;
-    }
-
-    public void setLastUpdateUserName(String lastUpdateUserName) {
-        this.lastUpdateUserName = lastUpdateUserName;
     }
 
     public Date getLastUpdationDate() {
@@ -112,5 +95,17 @@ public class BaseEntity implements Serializable {
     public Long getCurrentUserId() {
         return -1L;
     }
+    
+    public String getCurrentLanguage(){
+    	return "zh_CN";
+    }
 
+	public Map<String, Object> getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(Map<String, Object> attribute) {
+		this.attribute = attribute;
+	}
+    
 }

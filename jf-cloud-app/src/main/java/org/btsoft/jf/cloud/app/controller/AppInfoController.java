@@ -50,6 +50,14 @@ public class AppInfoController implements IBaseController<AppInfo>{
     public AppInfo deleteSingle(@RequestBody AppInfo appInfo) {
         return service.deleteSingle(appInfo);
     }
+    
+    @Override
+    @RequestMapping(value="/batch/delete",method = RequestMethod.DELETE)
+    @ApiOperation(value = "删除多个应用")
+    public List<AppInfo> deleteMultiple(@RequestBody List<AppInfo> appInfos) {
+    	service.deleteMultiple(appInfos);
+    	return appInfos;
+    }
 
     @Override
     @RequestMapping(value="/list",method = RequestMethod.GET)

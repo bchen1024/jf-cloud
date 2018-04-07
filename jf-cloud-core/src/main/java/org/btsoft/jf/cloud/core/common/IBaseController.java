@@ -1,8 +1,9 @@
 package org.btsoft.jf.cloud.core.common;
 
+import java.util.List;
+
 import org.btsoft.jf.cloud.core.entity.Page;
 import org.btsoft.jf.cloud.core.entity.PageResult;
-import java.util.List;
 
 public interface IBaseController<T> {
 
@@ -13,6 +14,8 @@ public interface IBaseController<T> {
     T updateSingle(T t);
 
     T deleteSingle(T t);
+    
+    List<T> deleteMultiple(List<T> t);
 
     List<T> findList(T t);
 
