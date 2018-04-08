@@ -95,6 +95,7 @@
 
 	<update id="updateSingle">
 		update sys_app_info_t t set
+		    t.app_code=#{vo.appName,jdbcType=VARCHAR},
 			t.app_name=#{vo.appName,jdbcType=VARCHAR},
 			t.app_desc=#{vo.appDesc,jdbcType=VARCHAR},
 			t.app_owner=#{vo.appOwner,jdbcType=NUMERIC},

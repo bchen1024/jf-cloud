@@ -18,7 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * 国际化Controller
+ * 角色Controller
  */
 @RestController
 @RequestMapping("/role")
