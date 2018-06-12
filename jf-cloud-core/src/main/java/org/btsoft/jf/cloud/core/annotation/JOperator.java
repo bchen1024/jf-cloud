@@ -24,8 +24,4 @@ public @interface JOperator {
 	public String descEN();// 权限英文描述
 
 	public SecurityEnums security() default SecurityEnums.LoginUser;
-	
-	public boolean isAudit() default false; //是否开启审计
-	
-	public boolean auditDesc() default true; //审计日志详情
 }
