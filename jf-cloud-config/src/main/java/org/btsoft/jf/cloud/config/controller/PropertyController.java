@@ -2,80 +2,96 @@ package org.btsoft.jf.cloud.config.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.btsoft.jf.cloud.config.entity.Property;
 import org.btsoft.jf.cloud.config.service.IPropertyService;
-import org.btsoft.jf.cloud.core.common.IBaseController;
-import org.btsoft.jf.cloud.core.common.constant.Controller;
-import org.btsoft.jf.cloud.core.entity.Page;
-import org.btsoft.jf.cloud.core.entity.PageResult;
+import org.btsoft.jf.cloud.config.web.dto.property.AddPropertyDTO;
+import org.btsoft.jf.cloud.config.web.dto.property.DeletePropertyDTO;
+import org.btsoft.jf.cloud.config.web.dto.property.PagePropertyDTO;
+import org.btsoft.jf.cloud.config.web.dto.property.UpdatePropertyDTO;
+import org.btsoft.jf.cloud.config.web.vo.property.PropertyVO;
+import org.btsoft.jf.cloud.core.annotation.JAuditLog;
+import org.btsoft.jf.cloud.core.annotation.JOperator;
+import org.btsoft.jf.cloud.core.annotation.JResource;
+import org.btsoft.jf.cloud.core.base.dto.PageDTO;
+import org.btsoft.jf.cloud.core.base.result.CommonResult;
+import org.btsoft.jf.cloud.core.base.result.PageResult;
+import org.btsoft.jf.cloud.core.constants.ControllerContants;
+import org.btsoft.jf.cloud.core.util.CommonResultUtils;
+import org.btsoft.jf.cloud.core.util.EntityUtils;
+import org.btsoft.jf.cloud.core.util.PageResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 /**
- * 数据字典Controller
+ * Property Controller
  */
 @RestController
-@RequestMapping("/property")
-@Api("数据字典API中心")
-public class PropertyController implements IBaseController<Property> {
+@RequestMapping("/config/property")
+@JResource(code="property",descCN="Property管理",descEN="Property Mgt")
+public class PropertyController {
 
 	@Autowired
 	private IPropertyService service;
 
-	@Override
-	@RequestMapping(value = Controller.PATH.CREATE, method = RequestMethod.POST)
-	@ApiOperation(value = Controller.API.CREATE)
-	public Property createSingle(@RequestBody Property property) {
-		return service.createSingle(property);
+	@PostMapping(ControllerContants.PATH.CREATE)
+	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建Property",descEN="Create I18n")
+	@JAuditLog
+	public CommonResult<Integer> createSingle(@RequestBody @Valid AddPropertyDTO t) {
+		Property entity = EntityUtils.dtoToEntity(t, Property.class);
+		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.SINGLE, method = RequestMethod.GET)
-	@ApiOperation(value = Controller.API.SINGLE)
-	public Property findSingle(Property property) {
-		return service.findSingle(property);
+	@GetMapping(ControllerContants.PATH.SINGLE_ID)
+	@JOperator(code=ControllerContants.JOPERATOR.SINGLE,descCN="查询单个Property",descEN="Find Single Property")
+	public CommonResult<PropertyVO> findSingle(@PathVariable("id") Long id) {
+		Property entity = new Property();
+		entity.setPropertyId(id);
+		Property result = service.findSingle(entity);
+		PropertyVO entityVO = EntityUtils.dtoToEntity(result, PropertyVO.class);
+		return CommonResultUtils.success(entityVO);
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.UPDATE, method = RequestMethod.PUT)
-	@ApiOperation(value = Controller.API.UPDATE)
-	public Property updateSingle(@RequestBody Property property) {
-		return service.updateSingle(property);
+	@PutMapping(ControllerContants.PATH.UPDATE)
+	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新Property",descEN="Update Property")
+	@JAuditLog
+	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdatePropertyDTO t) {
+		Property entity = EntityUtils.dtoToEntity(t, Property.class);
+		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.DELETE, method = RequestMethod.DELETE)
-	@ApiOperation(value = Controller.API.DELETE)
-	public Property deleteSingle(@RequestBody Property property) {
-		return service.deleteSingle(property);
+	@DeleteMapping(ControllerContants.PATH.DELETE_ID)
+	@JOperator(code=ControllerContants.JOPERATOR.DELETE,descCN="删除Property",descEN="Delete Property")
+	@JAuditLog
+	public CommonResult<Integer> deleteSingle(@PathVariable("id") Long id) {
+		Property entity = new Property();
+		entity.setPropertyId(id);
+		return CommonResultUtils.success(service.deleteSingle(entity));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.BATCH_DELETE, method = RequestMethod.DELETE)
-	@ApiOperation(value = Controller.API.BATCH_DELETE)
-	public List<Property> deleteMultiple(@RequestBody List<Property> propertys) {
-		service.deleteMultiple(propertys);
-		return propertys;
+	@DeleteMapping(ControllerContants.PATH.BATCH_DELETE)
+	@JOperator(code=ControllerContants.JOPERATOR.BATCH_DELETE,descCN="批量删除Property",descEN="Batch Delete Property")
+	@JAuditLog
+	public CommonResult<Integer> deleteMultiple(@RequestBody @Valid List<DeletePropertyDTO> t) {
+		List<Property> list = EntityUtils.dtoToEntityList(t, Property.class);
+		return CommonResultUtils.success(service.deleteMultiple(list));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.LIST, method = RequestMethod.GET)
-	@ApiOperation(value = Controller.API.LIST)
-	public List<Property> findList(Property property) {
-		return service.findList(property);
-	}
-
-	@Override
-	@RequestMapping(value = Controller.PATH.PAGE, method = RequestMethod.GET)
-	@ApiOperation(value = Controller.API.PAGE)
-	public PageResult<Property> findPageList(Property property, Page page) {
-		return service.findPageList(property, page);
+	@PostMapping(ControllerContants.PATH.PAGE)
+	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="Property列表",descEN="Property List")
+	public CommonResult<PageResult<PropertyVO>> findPageList(@RequestBody PagePropertyDTO t) {
+		Property entity = EntityUtils.dtoToEntity(t, Property.class);
+		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		PageResult<Property> result = service.findPageList(entity, pageDTO);
+		return CommonResultUtils.success(PageResultUtils.entityToVO(PropertyVO.class, result));
 	}
 
 }

@@ -1,15 +1,18 @@
 package org.btsoft.jf.cloud.config.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.btsoft.jf.cloud.config.entity.Lookup;
 import org.btsoft.jf.cloud.config.mapper.ILookupMapper;
 import org.btsoft.jf.cloud.config.service.ILookupService;
-import org.btsoft.jf.cloud.core.entity.Page;
-import org.btsoft.jf.cloud.core.entity.PageResult;
+import org.btsoft.jf.cloud.core.base.dto.PageDTO;
+import org.btsoft.jf.cloud.core.base.result.PageResult;
+import org.btsoft.jf.cloud.core.util.PageResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import com.github.pagehelper.PageHelper;
 
 @Service
 public class LookupService implements ILookupService {
@@ -18,9 +21,8 @@ public class LookupService implements ILookupService {
 	private ILookupMapper mapper;
 
 	@Override
-	public Lookup createSingle(Lookup lookup) {
-		mapper.createSingle(lookup);
-		return lookup;
+	public int createSingle(Lookup lookup) {
+		return mapper.createSingle(lookup);
 	}
 
 	@Override
@@ -29,40 +31,28 @@ public class LookupService implements ILookupService {
 	}
 
 	@Override
-	public Lookup updateSingle(Lookup lookup) {
-		mapper.updateSingle(lookup);
-		return lookup;
+	public int updateSingle(Lookup lookup) {
+		return mapper.updateSingle(lookup);
 	}
 
 	@Override
-	public Lookup deleteSingle(Lookup lookup) {
-		Lookup single = this.findSingle(lookup);
-		if (single != null) {
-			mapper.deleteSingle(single);
+	public int deleteSingle(Lookup lookup) {
+		return mapper.deleteSingle(lookup);
+	}
+
+	@Override
+	public int deleteMultiple(List<Lookup> lookups) {
+		if (!CollectionUtils.isEmpty(lookups)) {
+			return mapper.deleteMultiple(lookups);
 		}
-		return single;
+		return 0;
 	}
 
 	@Override
-	public void deleteMultiple(List<Lookup> lookups) {
-		if (lookups != null && !lookups.isEmpty()) {
-			mapper.deleteMultiple(lookups);
-		}
-	}
-
-	@Override
-	public List<Lookup> findList(Lookup lookup) {
-		return mapper.findList(lookup);
-	}
-
-	@Override
-	public PageResult<Lookup> findPageList(Lookup lookup, Page page) {
-		int total = mapper.findCount(lookup);
-		List<Lookup> result = new ArrayList<Lookup>();
-		if (total > 0) {
-			result = mapper.findPageList(lookup, page);
-		}
-		return new PageResult<Lookup>(result, page, total);
+	public PageResult<Lookup> findPageList(Lookup lookup, PageDTO pageDTO) {
+		PageHelper.startPage(pageDTO.getCurPage(), pageDTO.getPageSize());
+		List<Lookup> result = mapper.findPageList(lookup);
+		return PageResultUtils.toPageResult(result, pageDTO);
 	}
 
 }

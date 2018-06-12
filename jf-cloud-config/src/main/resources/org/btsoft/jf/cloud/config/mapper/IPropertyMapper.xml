@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.btsoft.jf.cloud.config.mapper.IPropertyMapper">
-	<resultMap id="propertyResultMap" type="org.btsoft.jf.cloud.config.entity.Property">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.config.entity.Property">
 		<result column="app_code" property="appCode"/>
 		<result column="enable_flag" property="enableFlag"/>
 		<result column="create_by" property="createBy"/>
@@ -41,15 +41,6 @@
 	<sql id="base_condition">
 		<trim prefix="where" prefixOverrides="and || or">
 		    t.app_code=#{vo.appCode,jdbcType=VARCHAR}
-			<if test='vo.enableFlag!=null and vo.enableFlag!=""'>
-                and t.enable_flag=#{vo.enableFlag,jdbcType=VARCHAR}
-            </if>
-            <if test='vo.createBy!=null and vo.createBy!=""'>
-                and t.create_by=#{vo.createBy,jdbcType=NUMERIC}
-            </if>
-            <if test='vo.lastUpdateBy!=null and vo.lastUpdateBy!=""'>
-                and t.last_update_by=#{vo.lastUpdateBy,jdbcType=NUMERIC}
-            </if>
             <if test='vo.propertyKey!=null and vo.propertyKey!=""'>
                 and t.property_key like concat('%',trim(#{vo.propertyKey,jdbcType=VARCHAR}),'%')
             </if>
@@ -62,10 +53,7 @@
 		</trim>
 	</sql>
 
-	<insert id="createSingle" parameterType="org.btsoft.jf.cloud.config.entity.Property">
-		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="propertyId">
-          SELECT LAST_INSERT_ID()
-        </selectKey>
+	<insert id="createSingle">
 		insert into sys_property_t (
 			property_key,
 			property_value,
@@ -91,7 +79,7 @@
 		)
 	</insert>
 
-    <select id="findSingle" resultMap="propertyResultMap">
+    <select id="findSingle" resultMap="sqlResultMap">
         <include refid="base_sql"/>
         where t.property_id=#{vo.propertyId,jdbcType=NUMERIC}
     </select>
@@ -121,19 +109,8 @@
 		where t.property_id=#{vo.propertyId,jdbcType=NUMERIC}
 	</update>
 
-	<select id="findList" resultMap="propertyResultMap">
+	<select id="findPageList" resultMap="sqlResultMap">
 		<include refid="base_sql"/>
-		<include refid="base_condition"/>
-	</select>
-
-	<select id="findPageList" resultMap="propertyResultMap">
-		<include refid="base_sql"/>
-		<include refid="base_condition"/>
-		limit #{page.startIndex},#{page.pageSize}
-	</select>
-
-	<select id="findCount" resultType="int">
-		select count(1) from sys_property_t t
 		<include refid="base_condition"/>
 	</select>
 

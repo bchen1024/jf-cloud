@@ -2,80 +2,96 @@ package org.btsoft.jf.cloud.config.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.btsoft.jf.cloud.config.entity.Lookup;
 import org.btsoft.jf.cloud.config.service.ILookupService;
-import org.btsoft.jf.cloud.core.common.IBaseController;
-import org.btsoft.jf.cloud.core.common.constant.Controller;
-import org.btsoft.jf.cloud.core.entity.Page;
-import org.btsoft.jf.cloud.core.entity.PageResult;
+import org.btsoft.jf.cloud.config.web.dto.lookup.AddLookupDTO;
+import org.btsoft.jf.cloud.config.web.dto.lookup.DeleteLookupDTO;
+import org.btsoft.jf.cloud.config.web.dto.lookup.PageLookupDTO;
+import org.btsoft.jf.cloud.config.web.dto.lookup.UpdateLookupDTO;
+import org.btsoft.jf.cloud.config.web.vo.lookup.LookupVO;
+import org.btsoft.jf.cloud.core.annotation.JAuditLog;
+import org.btsoft.jf.cloud.core.annotation.JOperator;
+import org.btsoft.jf.cloud.core.annotation.JResource;
+import org.btsoft.jf.cloud.core.base.dto.PageDTO;
+import org.btsoft.jf.cloud.core.base.result.CommonResult;
+import org.btsoft.jf.cloud.core.base.result.PageResult;
+import org.btsoft.jf.cloud.core.constants.ControllerContants;
+import org.btsoft.jf.cloud.core.util.CommonResultUtils;
+import org.btsoft.jf.cloud.core.util.EntityUtils;
+import org.btsoft.jf.cloud.core.util.PageResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 /**
- * 数据字典Controller
+ * Lookup Controller
  */
 @RestController
-@RequestMapping("/lookup")
-@Api("Lookup管理API中心")
-public class LookupController implements IBaseController<Lookup> {
+@RequestMapping("/config/lookup")
+@JResource(code="lookup",descCN="Lookup管理",descEN="Lookup Mgt")
+public class LookupController {
 
 	@Autowired
 	private ILookupService service;
 
-	@Override
-	@RequestMapping(value = Controller.PATH.CREATE, method = RequestMethod.POST)
-	@ApiOperation(value = Controller.API.CREATE)
-	public Lookup createSingle(@RequestBody Lookup lookup) {
-		return service.createSingle(lookup);
+	@PostMapping(ControllerContants.PATH.CREATE)
+	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建Lookup",descEN="Create I18n")
+	@JAuditLog
+	public CommonResult<Integer> createSingle(@RequestBody @Valid AddLookupDTO t) {
+		Lookup entity = EntityUtils.dtoToEntity(t, Lookup.class);
+		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.SINGLE, method = RequestMethod.GET)
-	@ApiOperation(value = Controller.API.SINGLE)
-	public Lookup findSingle(Lookup lookup) {
-		return service.findSingle(lookup);
+	@GetMapping(ControllerContants.PATH.SINGLE_ID)
+	@JOperator(code=ControllerContants.JOPERATOR.SINGLE,descCN="查询单个Lookup",descEN="Find Single Lookup")
+	public CommonResult<LookupVO> findSingle(@PathVariable("id") Long id) {
+		Lookup entity = new Lookup();
+		entity.setCodeId(id);
+		Lookup result = service.findSingle(entity);
+		LookupVO entityVO = EntityUtils.dtoToEntity(result, LookupVO.class);
+		return CommonResultUtils.success(entityVO);
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.UPDATE, method = RequestMethod.PUT)
-	@ApiOperation(value = Controller.API.UPDATE)
-	public Lookup updateSingle(@RequestBody Lookup Lookup) {
-		return service.updateSingle(Lookup);
+	@PutMapping(ControllerContants.PATH.UPDATE)
+	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新Lookup",descEN="Update Lookup")
+	@JAuditLog
+	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdateLookupDTO t) {
+		Lookup entity = EntityUtils.dtoToEntity(t, Lookup.class);
+		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.DELETE, method = RequestMethod.DELETE)
-	@ApiOperation(value = Controller.API.DELETE)
-	public Lookup deleteSingle(@RequestBody Lookup Lookup) {
-		return service.deleteSingle(Lookup);
+	@DeleteMapping(ControllerContants.PATH.DELETE_ID)
+	@JOperator(code=ControllerContants.JOPERATOR.DELETE,descCN="删除Lookup",descEN="Delete Lookup")
+	@JAuditLog
+	public CommonResult<Integer> deleteSingle(@PathVariable("id") Long id) {
+		Lookup entity = new Lookup();
+		entity.setCodeId(id);
+		return CommonResultUtils.success(service.deleteSingle(entity));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.BATCH_DELETE, method = RequestMethod.DELETE)
-	@ApiOperation(value = Controller.API.BATCH_DELETE)
-	public List<Lookup> deleteMultiple(@RequestBody List<Lookup> lookups) {
-		service.deleteMultiple(lookups);
-		return lookups;
+	@DeleteMapping(ControllerContants.PATH.BATCH_DELETE)
+	@JOperator(code=ControllerContants.JOPERATOR.BATCH_DELETE,descCN="批量删除Lookup",descEN="Batch Delete Lookup")
+	@JAuditLog
+	public CommonResult<Integer> deleteMultiple(@RequestBody @Valid List<DeleteLookupDTO> t) {
+		List<Lookup> list = EntityUtils.dtoToEntityList(t, Lookup.class);
+		return CommonResultUtils.success(service.deleteMultiple(list));
 	}
 
-	@Override
-	@RequestMapping(value = Controller.PATH.LIST, method = RequestMethod.GET)
-	@ApiOperation(value = Controller.API.LIST)
-	public List<Lookup> findList(Lookup lookup) {
-		return service.findList(lookup);
-	}
-
-	@Override
-	@RequestMapping(value = Controller.PATH.PAGE, method = RequestMethod.GET)
-	@ApiOperation(value = Controller.API.PAGE)
-	public PageResult<Lookup> findPageList(Lookup lookup, Page page) {
-		return service.findPageList(lookup, page);
+	@PostMapping(ControllerContants.PATH.PAGE)
+	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="Lookup列表",descEN="Lookup List")
+	public CommonResult<PageResult<LookupVO>> findPageList(@RequestBody PageLookupDTO t) {
+		Lookup entity = EntityUtils.dtoToEntity(t, Lookup.class);
+		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		PageResult<Lookup> result = service.findPageList(entity, pageDTO);
+		return CommonResultUtils.success(PageResultUtils.entityToVO(LookupVO.class, result));
 	}
 
 }

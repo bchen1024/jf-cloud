@@ -1,6 +1,6 @@
 package org.btsoft.jf.cloud.config.entity;
 
-import org.btsoft.jf.cloud.core.entity.BaseEntity;
+import org.btsoft.jf.cloud.core.base.entity.BaseEntity;
 
 /**
  * @ClassName Lookup
