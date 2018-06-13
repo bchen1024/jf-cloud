@@ -19,6 +19,7 @@ public interface ControllerContants {
 		public final static String 	BATCH_DELETE="/batch/delete";
 		public final static String 	LIST="/list";
 		public final static String 	PAGE="/page";
+		public final static String 	SYNC="/sync";
 	}
 	
 	public interface API{
@@ -38,5 +39,6 @@ public interface ControllerContants {
 		public final static String 	DELETE="delete";
 		public final static String 	BATCH_DELETE="batchDelete";
 		public final static String 	PAGE="page";
+		public final static String 	SYNC="sync";
 	}
 }
