@@ -1,6 +1,9 @@
 package org.btsoft.jf.cloud.security.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.btsoft.jf.cloud.core.base.mapper.IBaseCRUDMapper;
 import org.btsoft.jf.cloud.security.entity.Permission;
 
@@ -12,5 +15,12 @@ import org.btsoft.jf.cloud.security.entity.Permission;
  */
 @Mapper
 public interface IPermissionMapper extends IBaseCRUDMapper<Permission> {
+	
+	/**
+	 * 同步系统权限点
+	 * @param list
+	 * @return
+	 */
+	int syncPermission(@Param("list")List<Permission> list);
 
 }

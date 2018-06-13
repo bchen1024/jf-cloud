@@ -19,6 +19,7 @@ import org.btsoft.jf.cloud.security.service.IPermissionService;
 import org.btsoft.jf.cloud.security.web.dto.permission.AddPermissionDTO;
 import org.btsoft.jf.cloud.security.web.dto.permission.DeletePermissionDTO;
 import org.btsoft.jf.cloud.security.web.dto.permission.PagePermissionDTO;
+import org.btsoft.jf.cloud.security.web.dto.permission.SyncPermissionDTO;
 import org.btsoft.jf.cloud.security.web.dto.permission.UpdatePermissionDTO;
 import org.btsoft.jf.cloud.security.web.vo.permission.PermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,12 @@ public class PermissionController {
 		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
 		PageResult<Permission> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(PermissionVO.class, result));
+	}
+	
+	@PutMapping(ControllerContants.PATH.SYNC)
+	public CommonResult<Integer> sysPermission(@RequestBody SyncPermissionDTO dto){
+		List<Permission> entityList = EntityUtils.dtoToEntityList(dto.getPermissionList(), Permission.class);
+		return CommonResultUtils.success(service.syncPermission(entityList));
 	}
 
 }

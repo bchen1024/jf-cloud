@@ -104,4 +104,34 @@
 		<include refid="base_condition"/>
 	</select>
 
+	<insert id="syncPermission">
+		insert into sys_permission_t (
+			permission_code,
+			permission_desc_cn,
+			permission_desc_en,
+			permission_type,
+			parent_code,
+			permission_source,
+			app_code,
+			create_by,
+			last_update_by
+		)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.permissionCode,jdbcType=VARCHAR},
+			#{item.permissionDescCN,jdbcType=VARCHAR},
+			#{item.permissionDescEN,jdbcType=VARCHAR},
+			#{item.permissionType,jdbcType=VARCHAR},
+			ifnull(#{item.parentCode,jdbcType=VARCHAR},''),
+			'annotation',
+			#{item.appCode,jdbcType=VARCHAR},
+			#{item.currentUserId,jdbcType=NUMERIC},
+			#{item.currentUserId,jdbcType=NUMERIC})
+		</foreach>
+		on duplicate key update 
+			permission_desc_cn=VALUES(permission_desc_cn),
+			permission_desc_en=VALUES(permission_desc_en),
+			last_update_by=values(last_update_by),
+			last_updation_date=now()
+	</insert>
 </mapper>

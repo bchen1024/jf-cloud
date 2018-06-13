@@ -61,4 +61,12 @@ public class PermissionService implements IPermissionService {
 		return PageResultUtils.toPageResult(result, pageDTO);
 	}
 
+	@Override
+	public int syncPermission(List<Permission> list) {
+		if(!CollectionUtils.isEmpty(list)){
+			return mapper.syncPermission(list);
+		}
+		return 0;
+	}
+
 }
