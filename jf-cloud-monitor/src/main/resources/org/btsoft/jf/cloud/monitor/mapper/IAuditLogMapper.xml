@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.monitor.mapper.IAuditLogMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.core.base.entity.AuditLog">
+		<result column="app_code" property="appCode" />
+		<result column="log_id" property="logId" />
+		<result column="log_time" property="logTime" />
+		<result column="log_account" property="logAccount" />
+		<result column="log_ip" property="logIp" />
+		<result column="log_host" property="logHost" />
+		<result column="log_modul" property="logModul" />
+		<result column="log_method" property="logMethod" />
+		<result column="log_fullname" property="logFullName" />
+		<result column="log_message" property="logMessage" />
+		<result column="log_start_time" property="logStartTime" />
+		<result column="log_end_time" property="logEndTime" />
+		<result column="log_cost" property="logCost" />
+		<result column="log_url" property="logUrl" />
+		<result column="log_client" property="logClient" />
+		<result column="log_type" property="logType" />
+	</resultMap>
+
+	<sql id="base_sql">
+		select *
+		from sys_audit_log_t t
+	</sql>
+
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+			t.app_code=#{vo.appCode,jdbcType=VARCHAR}
+		</trim>
+	</sql>
+
+	<insert id="createSingle">
+		insert into sys_audit_log_t (
+		log_time,
+		log_account,
+		log_ip,
+		log_host,
+		log_modul,
+		log_method,
+		log_fullname,
+		log_message,
+		log_start_time,
+		log_end_time,
+		log_cost,
+		log_url,
+		log_client,
+		log_type,
+		app_code
+		)values(
+		#{vo.logTime},
+		#{vo.logAccount,jdbcType=VARCHAR},
+		#{vo.logIp,jdbcType=VARCHAR},
+		#{vo.logHost,jdbcType=VARCHAR},
+		#{vo.logModul,jdbcType=VARCHAR},
+		#{vo.logMethod,jdbcType=VARCHAR},
+		#{vo.logFullName,jdbcType=VARCHAR},
+		#{vo.logMessage,jdbcType=VARCHAR},
+		#{vo.logStartTime},
+		#{vo.logEndTime},
+		#{vo.logCost,jdbcType=NUMERIC},
+		#{vo.logUrl,jdbcType=VARCHAR},
+		#{vo.logClient,jdbcType=VARCHAR},
+		#{vo.logType,jdbcType=VARCHAR},
+		#{vo.appCode,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="findSingle" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		<where>
+			1=2
+		</where>
+	</select>
+
+	<delete id="deleteSingle">
+		delete from sys_audit_log_t where
+		log_id=#{vo.logId,jdbcType=NUMERIC}
+	</delete>
+
+	<delete id="deleteMultiple">
+		delete from sys_audit_log_t where
+		<foreach collection="list" item="item" open=" log_id in("
+			separator="," close=")">
+			#{item.logId,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
+
+	<update id="updateSingle">
+		update sys_audit_log_t t set
+		t.last_updation_date=now()
+		where
+		1=2
+	</update>
+
+	<select id="findPageList" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		<include refid="base_condition" />
+	</select>
+
+</mapper>
