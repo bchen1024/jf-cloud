@@ -10,9 +10,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;
+import org.btsoft.jf.cloud.core.context.JFCloud;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +25,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Order(-100)
 public class PermissionAspect {
-	
-	@Value("${jf.cloud.appCode:global}")
-	private String appCode;
 	
 	private final static Logger logger=LoggerFactory.getLogger(PermissionAspect.class);
 	
@@ -53,7 +50,7 @@ public class PermissionAspect {
     	JResource jr=clazz.getAnnotation(JResource.class);
     	JOperator jo=targetMethod.getAnnotation(JOperator.class);
     	StringBuffer sb=new StringBuffer();
-    	sb.append(appCode).append("$").append(jr.code()).append("$").append(jo.code());
+    	sb.append(JFCloud.getAppCode()).append("$").append(jr.code()).append("$").append(jo.code());
     	logger.info(String.format("Permission code is [%s]", sb));
     }
 

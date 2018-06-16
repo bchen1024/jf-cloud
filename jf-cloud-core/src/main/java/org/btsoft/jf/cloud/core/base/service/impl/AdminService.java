@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;
+import org.btsoft.jf.cloud.core.base.entity.AuditLog;
+import org.btsoft.jf.cloud.core.base.result.CommonResult;
 import org.btsoft.jf.cloud.core.base.service.IAdminService;
 import org.btsoft.jf.cloud.core.context.JFCloud;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
@@ -30,11 +33,11 @@ import com.alibaba.fastjson.JSON;
 @Service
 public class AdminService implements IAdminService {
 	
-	@Value("${jf.cloud.appCode:global}")
-	private String appCode;
-	
 	@Value("${jf.cloud.cloudPlatformUrl:http://jf-cloud-platform/cloud}")
 	private String cloudPlatformUrl;
+	
+	@Value("${jf.cloud.cloudMonitorUrl:http://jf-cloud-monitor/monitor}")
+	private String cloudMonitorUrl;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -62,7 +65,7 @@ public class AdminService implements IAdminService {
 				resourceMap.put("permissionDescCN", jr.descCN());
 				resourceMap.put("permissionDescEN", jr.descEN());
 				resourceMap.put("permissionType", "resouces");
-				resourceMap.put("appCode", appCode);
+				resourceMap.put("appCode", JFCloud.getAppCode());
 				resoucesList.add(resourceMap);
 				
 				//获取方法级权限配置
@@ -76,7 +79,7 @@ public class AdminService implements IAdminService {
 						methodMap.put("permissionDescEN", jo.descEN());
 						methodMap.put("parentCode", jr.code());
 						methodMap.put("permissionType", "method");
-						methodMap.put("appCode", appCode);
+						methodMap.put("appCode", JFCloud.getAppCode());
 						methodList.add(methodMap);
 					}
 				}
@@ -90,9 +93,21 @@ public class AdminService implements IAdminService {
 				Map<String,Object> params=new HashMap<String,Object>();
 				params.put("permissionList", resoucesList);
 				restTemplate.put(cloudPlatformUrl+"/security/permission/sync", params);
+				return resoucesList.size();
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	@Async
+	public void auditLog(AuditLog log) {
+		try {
+			restTemplate.postForObject(cloudMonitorUrl+"/auditLog/create", log, CommonResult.class);
+		} catch (Exception e) {
+			logger.error("Audit log is error:"+e.getMessage());
+		}
+		
 	}
 
 }

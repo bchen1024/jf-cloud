@@ -41,3 +41,6 @@ npm-debug.log
 /.settings
 /logs
 /target
+/jf-cloud-config-server/.mvn
+logs
+.settings

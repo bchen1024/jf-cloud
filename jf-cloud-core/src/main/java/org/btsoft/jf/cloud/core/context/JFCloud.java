@@ -20,4 +20,8 @@ public final class JFCloud {
 	public static ApplicationContext getContent(){
 		return context;
 	}
+	
+	public static String getAppCode(){
+		return context.getEnvironment().getProperty("jf.cloud.appCode");
+	}
 }

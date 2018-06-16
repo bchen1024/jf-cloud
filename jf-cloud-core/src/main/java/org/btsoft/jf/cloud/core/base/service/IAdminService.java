@@ -1,5 +1,7 @@
 package org.btsoft.jf.cloud.core.base.service;
 
+import org.btsoft.jf.cloud.core.base.entity.AuditLog;
+
 /**
  * 
  * @author chenbin
@@ -12,4 +14,10 @@ public interface IAdminService {
 	 * @return
 	 */
 	public int syncPermission();
+	
+	/**
+	 * 记录操作日志
+	 * @param log
+	 */
+	public void auditLog(AuditLog log);
 }
