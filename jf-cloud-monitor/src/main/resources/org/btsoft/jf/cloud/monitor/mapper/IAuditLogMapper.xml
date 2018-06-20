@@ -67,33 +67,6 @@
 		)
 	</insert>
 
-	<select id="findSingle" resultMap="sqlResultMap">
-		<include refid="base_sql" />
-		<where>
-			1=2
-		</where>
-	</select>
-
-	<delete id="deleteSingle">
-		delete from sys_audit_log_t where
-		log_id=#{vo.logId,jdbcType=NUMERIC}
-	</delete>
-
-	<delete id="deleteMultiple">
-		delete from sys_audit_log_t where
-		<foreach collection="list" item="item" open=" log_id in("
-			separator="," close=")">
-			#{item.logId,jdbcType=NUMERIC}
-		</foreach>
-	</delete>
-
-	<update id="updateSingle">
-		update sys_audit_log_t t set
-		t.last_updation_date=now()
-		where
-		1=2
-	</update>
-
 	<select id="findPageList" resultMap="sqlResultMap">
 		<include refid="base_sql" />
 		<include refid="base_condition" />

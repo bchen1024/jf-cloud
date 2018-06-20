@@ -10,7 +10,6 @@ import org.btsoft.jf.cloud.monitor.mapper.IAuditLogMapper;
 import org.btsoft.jf.cloud.monitor.service.IAuditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.github.pagehelper.PageHelper;
 
@@ -28,29 +27,6 @@ public class AuditLogService implements IAuditLogService {
 	@Override
 	public int createSingle(AuditLog t) {
 		return mapper.createSingle(t);
-	}
-
-	@Override
-	public AuditLog findSingle(AuditLog t) {
-		return mapper.findSingle(t);
-	}
-
-	@Override
-	public int updateSingle(AuditLog t) {
-		return mapper.updateSingle(t);
-	}
-
-	@Override
-	public int deleteSingle(AuditLog t) {
-		return mapper.deleteSingle(t);
-	}
-
-	@Override
-	public int deleteMultiple(List<AuditLog> t) {
-		if(!CollectionUtils.isEmpty(t)){
-			return mapper.deleteMultiple(t);
-		}
-		return 0;
 	}
 
 	@Override

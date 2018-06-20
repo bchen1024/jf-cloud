@@ -95,6 +95,28 @@
 			t.last_updation_date=now()
 		where t.role_id=#{vo.roleId,jdbcType=NUMERIC}
 	</update>
+	
+	<update id="patchSingle">
+		update sys_role_t t set
+			<if test="vo.roleCode!=null">
+				t.role_code=#{vo.roleCode,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.roleName!=null">
+				t.role_name=#{vo.roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.roleDesc!=null">
+				t.role_desc=#{vo.roleDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.applyStatus!=null">
+				t.apply_status=#{vo.applyStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.roleOwner!=null">
+				t.role_owner=#{vo.roleOwner,jdbcType=NUMERIC},
+			</if>
+			t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+			t.last_updation_date=now()
+		where t.role_id=#{vo.roleId,jdbcType=NUMERIC}
+	</update>
 
 	<select id="findPageList" resultMap="sqlResultMap">
 		<include refid="base_sql"/>

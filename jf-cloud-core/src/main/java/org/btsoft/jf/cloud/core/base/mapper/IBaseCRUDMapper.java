@@ -12,6 +12,8 @@ public interface IBaseCRUDMapper<T> {
 
 	int updateSingle(@Param("vo") T t);
 
+	int patchSingle(@Param("vo") T t);
+
 	int deleteSingle(@Param("vo") T t);
 
 	int deleteMultiple(@Param("list") List<T> t);
