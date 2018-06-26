@@ -3,8 +3,6 @@ package org.btsoft.jf.cloud.core.base.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 /**
  * 
  * @author chenbin
@@ -32,10 +30,8 @@ public class AuditLog implements Serializable {
 
 	private String logMessage;
 
-	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private Date logStartTime;
 	
-	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private Date logEndTime;
 
 	private Long logCost;

@@ -33,7 +33,7 @@ import com.alibaba.fastjson.JSON;
 @Service
 public class AdminService implements IAdminService {
 	
-	@Value("${jf.cloud.cloudPlatformUrl:http://jf-cloud-platform/cloud}")
+	@Value("${jf.cloud.cloudPlatformUrl:http://jf-cloud-platform/platform}")
 	private String cloudPlatformUrl;
 	
 	@Value("${jf.cloud.cloudMonitorUrl:http://jf-cloud-monitor/monitor}")

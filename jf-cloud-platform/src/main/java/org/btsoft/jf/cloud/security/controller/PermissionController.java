@@ -96,6 +96,7 @@ public class PermissionController {
 	}
 	
 	@PutMapping(ControllerContants.PATH.SYNC)
+	@JAuditLog
 	public CommonResult<Integer> sysPermission(@RequestBody SyncPermissionDTO dto){
 		List<Permission> entityList = EntityUtils.dtoToEntityList(dto.getPermissionList(), Permission.class);
 		return CommonResultUtils.success(service.syncPermission(entityList));

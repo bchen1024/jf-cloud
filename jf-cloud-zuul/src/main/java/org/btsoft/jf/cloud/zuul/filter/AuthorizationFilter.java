@@ -53,9 +53,12 @@ public class AuthorizationFilter extends ZuulFilter {
 			}
 			logger.info(String.format("Token:%s",token));
 			//如果token为空，无权限
-			if(StringUtils.isEmpty(token)) {
+			/*if(StringUtils.isEmpty(token)) {
 				this.setErrorResponse(ctx, "security.exception.tokenIsNull");
-			}
+				return null;
+			}*/
+			ctx.setSendZuulResponse(true);// 对该请求进行路由  
+            ctx.setResponseStatusCode(200);
         }
         
         return null;
