@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.sso.auth.mapper.IUserMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.sso.auth.entity.User">
+		<result column="enable_flag" property="enableFlag" />
+		<result column="create_by" property="createBy" />
+		<result column="creation_date" property="creationDate" />
+		<result column="last_update_by" property="lastUpdateBy" />
+		<result column="last_updation_date" property="lastUpdationDate" />
+
+		<result column="user_id" property="userId" />
+		<result column="user_account" property="userAccount" />
+		<result column="user_name" property="userName" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_tel" property="userTel" />
+		<result column="employee_no" property="employeeNo" />
+		<result column="user_type" property="userType" />
+		<result column="pwd_error" property="pwdError" />
+		<result column="lock_time" property="lockTime" />
+		<result column="pwd_update_time" property="pwdUpdateTime" />
+		<result column="user_status" property="userStatus" />
+	</resultMap>
+
+	<sql id="base_sql">
+		select
+		*
+		from sys_user_t t
+	</sql>
+
+	<select id="findUserByAccount" resultMap="sqlResultMap">
+		<include refid="base_sql"></include>
+		where t.user_account=#{userAccount,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updatePassword">
+		update sys_user_t t set
+			t.password=#{password,jdbcType=VARCHAR},
+			t.pwd_update_time=now()
+		where t.user_id=#{userId,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updateUserPwdErrorAndLockTime">
+		update sys_user_t t set
+			t.pwd_error=#{pwdError,jdbcType=NUMERIC},
+			t.lock_time=#{lockTime}
+		where t.user_id=#{userId,jdbcType=BIGINT}
+	</update>
+	
+</mapper>

@@ -1,17 +1,16 @@
-package org.btsoft.jf.cloud.core.base;
+package org.btsoft.jf.cloud.core.auth.entity;
 
-import org.btsoft.jf.cloud.core.base.entity.BaseEntity;
+import org.btsoft.jf.cloud.core.base.entity.BaseAuditEntity;
 
 /**
- * 用户实体对象
  * 
- * @author bchen
- * @createDate 2018-4-12
+ * @author chenbin
+ * @date 2018年6月27日 下午10:51:31
  */
-public class UserInfo extends BaseEntity {
+public class UserInfo extends BaseAuditEntity {
 
-	private static final long serialVersionUID = 6921872933864592335L;
-
+	private static final long serialVersionUID = -9101732352094880641L;
+	
 	/**
 	 * 用户id
 	 */
@@ -46,11 +45,11 @@ public class UserInfo extends BaseEntity {
 	 * 用户类型
 	 */
 	private String userType;
-
+	
 	/**
-	 * 用户密码有效期
+	 * 用户状态
 	 */
-	private int userTimeout;
+	private String userStatus;
 
 	public Long getUserId() {
 		return userId;
@@ -108,12 +107,12 @@ public class UserInfo extends BaseEntity {
 		this.userType = userType;
 	}
 
-	public int getUserTimeout() {
-		return userTimeout;
+	public String getUserStatus() {
+		return userStatus;
 	}
 
-	public void setUserTimeout(int userTimeout) {
-		this.userTimeout = userTimeout;
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
 	}
 
 }

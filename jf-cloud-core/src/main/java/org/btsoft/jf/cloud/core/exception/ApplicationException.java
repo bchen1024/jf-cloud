@@ -15,6 +15,7 @@ public class ApplicationException extends RuntimeException implements Serializab
 	private String errorCode="exception.systemException";
 	private int httpCode=500;
 	private Object[] args;
+	private String message;
 
 	public String getErrorCode() {
 		return errorCode;
@@ -42,7 +43,17 @@ public class ApplicationException extends RuntimeException implements Serializab
 		this.args = args;
 
 	}
-
+	public ApplicationException(String errorCode,String message) {
+		super(errorCode);
+		this.errorCode = errorCode;
+		this.message=message;
+	}
+	public ApplicationException(String errorCode,String message,Object[] args) {
+		super(errorCode);
+		this.errorCode = errorCode;
+		this.message=message;
+		this.args = args;
+	}
 	public ApplicationException(String errorCode, Object[] args) {
 		super(errorCode);
 		this.errorCode = errorCode;
@@ -71,7 +82,7 @@ public class ApplicationException extends RuntimeException implements Serializab
 
 	@Override
 	public String getMessage() {
-		return errorCode;
+		return this.message;
 	}
 
 	public int getHttpCode() {
@@ -82,4 +93,8 @@ public class ApplicationException extends RuntimeException implements Serializab
 		this.httpCode = httpCode;
 	}
 
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 }
