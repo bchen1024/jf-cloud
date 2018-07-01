@@ -113,7 +113,12 @@ public class AuditLogAspect {
 			log.setLogMethod(type);
 			log.setLogCost(endTime-startTime);
 			log.setLogUrl(request.getRequestURL().toString());
-			log.setLogMessage(JSON.toJSONString(joinPoint.getArgs()));
+			String message=ja.message();
+			if(StringUtils.isEmpty(message)){
+				log.setLogMessage(JSON.toJSONString(joinPoint.getArgs()));
+			}else{
+				log.setLogMessage(message);
+			}
 			service.auditLog(log);
 		} catch (Exception e) {
 			logger.error("audit log is error:"+e.getMessage());

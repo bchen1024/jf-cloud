@@ -9,6 +9,7 @@
 		<result column="last_updation_date" property="lastUpdationDate" />
 
 		<result column="user_id" property="userId" />
+		<result column="password" property="password" />
 		<result column="user_account" property="userAccount" />
 		<result column="user_name" property="userName" />
 		<result column="user_email" property="userEmail" />

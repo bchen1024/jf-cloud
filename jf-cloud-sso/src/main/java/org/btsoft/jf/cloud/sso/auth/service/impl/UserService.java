@@ -8,7 +8,9 @@ import org.btsoft.jf.cloud.core.util.DESEncrypt;
 import org.btsoft.jf.cloud.sso.auth.dto.LoginDTO;
 import org.btsoft.jf.cloud.sso.auth.dto.UpdatePasswordDTO;
 import org.btsoft.jf.cloud.sso.auth.entity.User;
+import org.btsoft.jf.cloud.sso.auth.entity.UserToken;
 import org.btsoft.jf.cloud.sso.auth.mapper.IUserMapper;
+import org.btsoft.jf.cloud.sso.auth.mapper.IUserTokenMapper;
 import org.btsoft.jf.cloud.sso.auth.service.IUserService;
 import org.btsoft.jf.cloud.sso.auth.vo.LoginVO;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +40,9 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private IUserMapper mapper;
+	
+	@Autowired
+	private IUserTokenMapper userTokenMapper;
 	
 	@Override
 	public User findUserByAccount(String userAccount) {
@@ -92,10 +97,16 @@ public class UserService implements IUserService {
 		LoginVO loginVO=new LoginVO();
 		String token=DESEncrypt.createJWT(user.getUserAccount(), 0L, null);
 		loginVO.setToken(token);
-		
 		UserInfo userInfo=new UserInfo();
 		BeanUtils.copyProperties(user, userInfo);
 		loginVO.setUser(userInfo);
+		
+		//保存用户token记录
+		UserToken userToken=new UserToken();
+		userToken.setUserAccount(user.getUserAccount());
+		userToken.setToken(token);
+		userToken.setTokenType("PC");
+		userTokenMapper.createUserToken(userToken);
 		return loginVO;
 	}
 
