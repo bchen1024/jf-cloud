@@ -24,11 +24,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 public class DESEncrypt {
 
-	/**
-	 * 签名密钥字符串
-	 */
-	private final static String SIGNING_KEY = "qazwsxedcasdfghj";
-
 	private final static long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
 
 	/**
@@ -112,9 +107,6 @@ public class DESEncrypt {
 
 	public static String createJWT(String userAccount, long expirationTime, String signingKeyStr) {
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-		if (signingKeyStr == null) {
-			signingKeyStr = SIGNING_KEY;
-		}
 		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(signingKeyStr);
 		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 		long now = System.currentTimeMillis();
@@ -136,9 +128,6 @@ public class DESEncrypt {
 	}
 
 	public static Claims parseJWT(String jwt, String signingKeyStr) {
-		if (signingKeyStr == null) {
-			signingKeyStr = SIGNING_KEY;
-		}
 		Claims claim = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(signingKeyStr))
 				.parseClaimsJws(jwt).getBody();
 		return claim;

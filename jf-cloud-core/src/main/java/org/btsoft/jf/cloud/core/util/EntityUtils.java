@@ -16,7 +16,7 @@ public class EntityUtils {
 	
 	private final static Logger logger=LoggerFactory.getLogger(EntityUtils.class);
 
-	public static <T> T dtoToEntity(Object source,Class<T> clazz){
+	public static <T> T copyProperties(Object source,Class<T> clazz){
 		try {
 			if(source!=null){
 				T target=clazz.newInstance();
