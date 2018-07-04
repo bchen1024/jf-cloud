@@ -36,8 +36,8 @@ public class AuditLogController {
 	
 	@PostMapping(ControllerContants.PATH.PAGE)
 	public CommonResult<PageResult<AuditLog>> findPageList(@RequestBody PageAuditLogDTO t) {
-		AuditLog entity = EntityUtils.dtoToEntity(t, AuditLog.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		AuditLog entity = EntityUtils.copyProperties(t, AuditLog.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<AuditLog> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(result);
 	}
