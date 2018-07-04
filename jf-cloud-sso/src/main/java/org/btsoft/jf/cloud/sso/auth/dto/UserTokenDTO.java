@@ -2,6 +2,8 @@ package org.btsoft.jf.cloud.sso.auth.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 
  * @author chenbin
@@ -11,6 +13,7 @@ public class UserTokenDTO implements Serializable {
 
 	private static final long serialVersionUID = 3638466014235060884L;
 	 
+	@NotBlank
 	private String token;
 
 	public String getToken() {

@@ -37,6 +37,18 @@ public class UserService implements IUserService {
 	 */
 	@Value("${jf.cloud.sso.lockDuration:300000}")
 	private int lockDuration;
+	
+	/**
+	 * jwt密钥
+	 */
+	@Value("${jf.cloud.sso.signingKey:null}")
+	private String signingKey;
+	
+	/**
+	 * jwt过期时长
+	 */
+	@Value("${jf.cloud.sso.expirationTime:0}")
+	private long expirationTime;
 
 	@Autowired
 	private IUserMapper mapper;
@@ -52,19 +64,17 @@ public class UserService implements IUserService {
 		user= mapper.findUserByAccount(user);
 		
 		if(user==null){//帐号不存在
-			throw new ApplicationException("login.auth.user.notExists","The user does not exist");
+			throw new ApplicationException("sso.auth.user.notExists","The user does not exist");
 		}else if(!"Y".equals(user.getUserStatus())){//用户是无效的
-			throw new ApplicationException("login.auth.user.invalid","The user is invalid");
+			throw new ApplicationException("sso.auth.user.invalid","The user is invalid");
 		}else if(user.getLockTime()!=null){//用户密码错误被锁定中
 			long lockTime=user.getLockTime().getTime();
 			long curTime=System.currentTimeMillis();
-			if(curTime-lockTime<=lockDuration){
-				throw new ApplicationException("login.auth.user.lock",
+			if(curTime-lockTime<=lockDuration && lockDuration>0){//用户属于锁定中，无法登录
+				throw new ApplicationException("sso.auth.user.lock",
 						String.format("The user is locked for %s seconds",(lockDuration+lockTime-curTime)/1000),new Object[]{(lockDuration+lockTime-curTime)/1000});
-			}else{
-				user.setPwdError(0);
-				user.setLockTime(null);
-				mapper.updateUserPwdErrorAndLockTime(user);
+			}else{//用户已超过锁定时长，解除锁定
+				this.updateUserPwdErrorAndLockTime(0, null);
 			}
 		}
 		return user;
@@ -77,25 +87,25 @@ public class UserService implements IUserService {
 		String desPassword=DESEncrypt.encrypt(login.getPassword());
 		if(!desPassword.equals(user.getPassword())){
 			int errorCount=user.getPwdError()+1;
-			user.setPwdError(errorCount);
-			if(errorCount>passwordErrorNumber){
-				user.setLockTime(new Date());
-				mapper.updateUserPwdErrorAndLockTime(user);
-				throw new ApplicationException("login.auth.password.incorrect","Incorrect password",new Object[]{errorCount,passwordErrorNumber});
+			if(errorCount>passwordErrorNumber){//密码错误次数超过限制，锁定用户
+				this.updateUserPwdErrorAndLockTime(errorCount, new Date());
+				throw new ApplicationException("sso.auth.login.lockUser",
+						String.format("The number of password errors is more than %s times, and the user is locked", errorCount),
+						new Object[]{errorCount,passwordErrorNumber});
+			}else{//密码错误，更新密码错误次数
+				this.updateUserPwdErrorAndLockTime(errorCount, null);
+				throw new ApplicationException("sso.auth.login.password.error",
+						String.format("The password has been wrong %s times, and the wrong %s time will lock the user", errorCount,passwordErrorNumber-errorCount),
+						new Object[]{errorCount,passwordErrorNumber});
 			}
-			//更新密码错误次数
-			user.setLockTime(null);
-			mapper.updateUserPwdErrorAndLockTime(user);
-			throw new ApplicationException("login.auth.password.incorrect",
-					String.format("Incorrect password,Error %s times,The wrong %s time will lock the user", errorCount,passwordErrorNumber-user.getPwdError()),new Object[]{errorCount,passwordErrorNumber});
-		}else{
-			user.setPwdError(0);
-			user.setLockTime(null);
-			mapper.updateUserPwdErrorAndLockTime(user);
+			
+		}else if(user.getLockTime()!=null || user.getPwdError()>0){
+			//密码正确,如果被锁定或者密码错误多次，解锁用户并且更新用户密码错误次数为0
+			this.updateUserPwdErrorAndLockTime(0, null);
 		}
 		//生成token
 		LoginVO loginVO=new LoginVO();
-		String token=DESEncrypt.createJWT(user.getUserAccount(), 0L, null);
+		String token=DESEncrypt.createJWT(user.getUserAccount(), expirationTime, signingKey);
 		loginVO.setToken(token);
 		UserInfo userInfo=new UserInfo();
 		BeanUtils.copyProperties(user, userInfo);
@@ -125,6 +135,13 @@ public class UserService implements IUserService {
 		}
 		user.setPassword(DESEncrypt.encrypt(dto.getNewPassword()));
 		return mapper.updatePassword(user);
+	}
+	
+	private void updateUserPwdErrorAndLockTime(int pwdError,Date lockTime){
+		User user=new User();
+		user.setPwdError(pwdError);
+		user.setLockTime(lockTime);
+		mapper.updateUserPwdErrorAndLockTime(user);
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.btsoft.jf.cloud.sso.auth.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
 import org.btsoft.jf.cloud.sso.auth.entity.UserToken;
 
 /**
@@ -24,7 +23,7 @@ public interface IUserTokenMapper {
 	 * @param userToken
 	 * @return
 	 */
-	UserInfo findUserByToken(UserToken userToken);
+	UserToken findUserToken(UserToken userToken);
 	
 	/**
 	 * 退出删除用户token记录

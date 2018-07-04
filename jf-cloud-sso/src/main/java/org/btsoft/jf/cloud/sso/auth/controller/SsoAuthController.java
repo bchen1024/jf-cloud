@@ -1,5 +1,7 @@
 package org.btsoft.jf.cloud.sso.auth.controller;
 
+import javax.validation.Valid;
+
 import org.btsoft.jf.cloud.core.annotation.JAuditLog;
 import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
 import org.btsoft.jf.cloud.core.base.result.CommonResult;
@@ -36,27 +38,27 @@ public class SsoAuthController {
 	
 	@PostMapping("/login")
 	@JAuditLog(message="login successful")
-	public CommonResult<LoginVO> login(@RequestBody LoginDTO login){
+	public CommonResult<LoginVO> login(@RequestBody @Valid LoginDTO login){
 		LoginVO loginVO=service.login(login);
 		return CommonResultUtils.success(loginVO);
 	}
 	
 	@PostMapping("/logout")
 	@JAuditLog(message="logout successful")
-	public CommonResult<Integer> logout(@RequestBody LogoutDTO logout){
-		UserToken ut=EntityUtils.dtoToEntity(logout, UserToken.class);
+	public CommonResult<Integer> logout(@RequestBody @Valid LogoutDTO logout){
+		UserToken ut=EntityUtils.copyProperties(logout, UserToken.class);
 		return CommonResultUtils.success(userTokenService.deleteUserToken(ut));
 	}
 	
 	@PostMapping("/updatePassword")
 	@JAuditLog(message="update password successful")
-	public CommonResult<Integer> updatePassword(@RequestBody UpdatePasswordDTO dto){
+	public CommonResult<Integer> updatePassword(@RequestBody @Valid UpdatePasswordDTO dto){
 		return CommonResultUtils.success(service.updatePassword(dto));
 	}
 	
 	@PostMapping("/user")
-	public CommonResult<UserInfo> findUserByToken(@RequestBody UserTokenDTO userToken){
-		UserToken ut=EntityUtils.dtoToEntity(userToken, UserToken.class);
+	public CommonResult<UserInfo> findUserByToken(@RequestBody @Valid UserTokenDTO userToken){
+		UserToken ut=EntityUtils.copyProperties(userToken, UserToken.class);
 		return CommonResultUtils.success(userTokenService.findUserByToken(ut));
 	}
 }

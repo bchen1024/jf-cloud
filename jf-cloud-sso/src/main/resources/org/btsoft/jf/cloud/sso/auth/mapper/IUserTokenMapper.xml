@@ -7,41 +7,33 @@
 		<result column="token" property="token" />
 		<result column="token_type" property="tokenType" />
 	</resultMap>
-	
-	<resultMap id="userResultMap" type="org.btsoft.jf.cloud.core.auth.entity.UserInfo">
-		<result column="enable_flag" property="enableFlag" />
-		<result column="create_by" property="createBy" />
-		<result column="creation_date" property="creationDate" />
-		<result column="last_update_by" property="lastUpdateBy" />
-		<result column="last_updation_date" property="lastUpdationDate" />
-
-		<result column="user_id" property="userId" />
-		<result column="user_account" property="userAccount" />
-		<result column="user_name" property="userName" />
-		<result column="user_email" property="userEmail" />
-		<result column="user_tel" property="userTel" />
-		<result column="employee_no" property="employeeNo" />
-		<result column="user_type" property="userType" />
-		<result column="user_status" property="userStatus" />
-	</resultMap>
 
 	<insert id="createUserToken">
 		replace into sys_user_token_rt
-		(user_account,token,token_type,creation_date)
-		values(#{userAccount,jdbcType=VARCHAR},#{token,jdbcType=VARCHAR},
-		#{tokenType,jdbcType=VARCHAR},
-		now());
+			(
+				user_account,
+			 	token,
+			 	token_type,
+			 	creation_date
+			)
+			values(
+				#{userAccount,jdbcType=VARCHAR},
+				#{token,jdbcType=VARCHAR},
+				#{tokenType,jdbcType=VARCHAR},
+				now()
+			);
 	</insert>
-	
-	<select id="findUserByToken" resultMap="userResultMap">
-		select 
-			*
-		 from sys_user_token_rt ut
-		   inner join sys_user_t u on u.user_account=ut.user_account
+
+	<select id="findUserToken" resultMap="sqlResultMap">
+		select
+		*
+		from sys_user_token_rt ut
 		where ut.token=#{token,jdbcType=VARCHAR}
+		  and ut.user_account=#{userAccount,jdbcType=VARCHAR} 
 	</select>
-	
+
 	<delete id="deleteUserToken">
-		delete from sys_user_token_rt where token=#{token,jdbcType=VARCHAR}
+		delete from sys_user_token_rt where
+			token=#{token,jdbcType=VARCHAR}
 	</delete>
 </mapper>

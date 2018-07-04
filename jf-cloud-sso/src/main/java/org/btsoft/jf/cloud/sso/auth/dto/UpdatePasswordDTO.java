@@ -2,6 +2,8 @@ package org.btsoft.jf.cloud.sso.auth.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 
  * @author chenbin
@@ -11,12 +13,16 @@ public class UpdatePasswordDTO implements Serializable {
 
 	private static final long serialVersionUID = -4464203512002010698L;
 	
+	@NotBlank
 	private String userAccount;
 	
+	@NotBlank
 	private String originalPassword;
 	
+	@NotBlank
 	private String newPassword;
 	
+	@NotBlank
 	private String confirmPassword;
 
 	public String getUserAccount() {
