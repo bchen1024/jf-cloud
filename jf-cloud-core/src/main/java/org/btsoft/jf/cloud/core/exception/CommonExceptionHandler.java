@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.btsoft.jf.cloud.core.base.result.CommonResult;
 import org.btsoft.jf.cloud.core.util.CommonResultUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * 
@@ -22,6 +24,7 @@ public class CommonExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public <T> CommonResult<T> handleException(Exception e) {
 		e.printStackTrace();
 		return CommonResultUtils.fail(ExceptionConstants.SYS_EXCEPTION_CODE, e.getMessage());
@@ -29,12 +32,14 @@ public class CommonExceptionHandler {
 
 	@ExceptionHandler(ApplicationException.class)
 	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public <T> CommonResult<T> handleException(ApplicationException e) {
-		return CommonResultUtils.fail(e.getErrorCode(), e.getMessage(), e.getArgs());
+		return CommonResultUtils.fail(e.getHttpCode(),e.getErrorCode(), e.getMessage(), e.getArgs());
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public <T> CommonResult<T> handleValidException(MethodArgumentNotValidException e) {
 		BindingResult bindingResult=e.getBindingResult();
 		List<FieldError> errors=bindingResult.getFieldErrors();

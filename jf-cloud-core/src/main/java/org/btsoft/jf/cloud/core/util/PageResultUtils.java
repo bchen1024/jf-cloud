@@ -25,7 +25,7 @@ public class PageResultUtils {
 		PageVO pageVO=new PageVO();
 		BeanUtils.copyProperties(pageDTO, pageVO);
 		PageInfo<T> pageInfo=new PageInfo<>(list);
-		pageVO.setTotalRows(pageInfo.getTotal());
+		pageVO.setTotal(pageInfo.getTotal());
 		PageResult<T> result=new PageResult<>(list, pageVO);
 		return result;
 	}

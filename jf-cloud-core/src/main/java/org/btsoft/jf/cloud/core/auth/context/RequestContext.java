@@ -2,6 +2,8 @@ package org.btsoft.jf.cloud.core.auth.context;
 
 import java.io.Serializable;
 
+import org.btsoft.jf.cloud.core.exception.ApplicationException;
+
 /**
  * 
  * @author chenbin
@@ -14,7 +16,11 @@ public class RequestContext implements Serializable {
 	private RequestUser user;
 
 	public static RequestContext getCurrent() {
-		return RequestManagement.getCurrent();
+		RequestContext rc=RequestManagement.getCurrent();
+		if(rc==null){
+			throw new ApplicationException(401, "exception.requestContext.notExists","RequestContext is null");
+		}
+		return rc; 
 	}
 
 	public RequestUser getUser() {

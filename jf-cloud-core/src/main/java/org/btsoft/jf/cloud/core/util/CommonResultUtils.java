@@ -45,4 +45,21 @@ public class CommonResultUtils {
 		return result;
 	}
 	
+	public static <T> CommonResult<T> fail(int httpCode,String errorCode, String errorMsg) {
+		CommonResult<T> result = new CommonResult<T>();
+		result.setHttpCode(httpCode);
+		result.setErrorCode(errorCode);
+		result.setErrorMsg(errorMsg);
+		return result;
+	}
+	
+	public static <T> CommonResult<T> fail(int httpCode,String errorCode, String errorMsg, Object[] args) {
+		CommonResult<T> result = new CommonResult<T>();
+		result.setHttpCode(httpCode);
+		result.setErrorCode(errorCode);
+		result.setErrorMsg(errorMsg);
+		result.setArgs(args);
+		return result;
+	}
+	
 }

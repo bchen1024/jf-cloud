@@ -123,4 +123,7 @@
 		<include refid="base_condition"/>
 	</select>
 
+	<select id="findRoleList" resultType="hashmap">
+		select t.
+	</select>
 </mapper>

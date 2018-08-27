@@ -2,6 +2,7 @@ package org.btsoft.jf.cloud.monitor.service.impl;
 
 import java.util.List;
 
+import org.btsoft.jf.cloud.core.auth.context.RequestContext;
 import org.btsoft.jf.cloud.core.base.dto.PageDTO;
 import org.btsoft.jf.cloud.core.base.entity.AuditLog;
 import org.btsoft.jf.cloud.core.base.result.PageResult;
@@ -31,6 +32,7 @@ public class AuditLogService implements IAuditLogService {
 
 	@Override
 	public PageResult<AuditLog> findPageList(AuditLog t, PageDTO pageDTO) {
+		System.out.println(RequestContext.getCurrent().getUser().getUserAccount());
 		PageHelper.startPage(pageDTO.getCurPage(), pageDTO.getPageSize());
 		List<AuditLog> result = mapper.findPageList(t);
 		return PageResultUtils.toPageResult(result, pageDTO);

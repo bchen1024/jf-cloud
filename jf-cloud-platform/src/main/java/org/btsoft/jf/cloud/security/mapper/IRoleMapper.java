@@ -1,5 +1,8 @@
 package org.btsoft.jf.cloud.security.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.btsoft.jf.cloud.core.base.mapper.IBaseCRUDMapper;
 import org.btsoft.jf.cloud.security.entity.Role;
@@ -12,5 +15,6 @@ import org.btsoft.jf.cloud.security.entity.Role;
  */
 @Mapper
 public interface IRoleMapper extends IBaseCRUDMapper<Role> {
-
+	
+	List<Map<String,Object>> findRoleList(List<Long> roleList);
 }

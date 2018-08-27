@@ -5,8 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
+import org.btsoft.jf.cloud.core.base.result.CommonResult;
+import org.btsoft.jf.cloud.core.base.service.IUserQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +22,9 @@ import com.netflix.zuul.context.RequestContext;
 public class AuthorizationFilter extends ZuulFilter {
 
     private final static Logger logger= LoggerFactory.getLogger(AuthorizationFilter.class);
+    
+    @Autowired
+    private IUserQueryService userQueryService;
 
     @Override
     public String filterType() {
@@ -42,7 +49,7 @@ public class AuthorizationFilter extends ZuulFilter {
         logger.debug(String.format("[%s] %s",request.getMethod(),uri));
         
         //跳过鉴权
-        if(uri.contains("/public/")){
+        if(uri.contains("/public/") || uri.contains("/auth/") || uri.contains("swagger") || uri.contains("api-docs")){
         	ctx.setSendZuulResponse(true);// 对该请求进行路由  
             ctx.setResponseStatusCode(200);
         }else{
@@ -51,16 +58,23 @@ public class AuthorizationFilter extends ZuulFilter {
 			if(StringUtils.isEmpty(token)) {
 				token=request.getParameter("token");
 			}
-			logger.info(String.format("Token:%s",token));
+			
 			//如果token为空，无权限
-			/*if(StringUtils.isEmpty(token)) {
-				this.setErrorResponse(ctx, "security.exception.tokenIsNull");
-				return null;
-			}*/
-			ctx.setSendZuulResponse(true);// 对该请求进行路由  
-            ctx.setResponseStatusCode(200);
+			if(StringUtils.isEmpty(token)) {
+				this.setErrorResponse(ctx, "zuul.token.null");
+			}else{
+				logger.info(String.format("Token:%s",token));
+				CommonResult<UserInfo> cr=userQueryService.findUserByToken(token);
+				if(cr.getData()!=null){
+					ctx.addZuulRequestHeader("Authorization", token);
+					ctx.addZuulRequestHeader("Cloud-Zuul", "true");
+					ctx.setSendZuulResponse(true);// 对该请求进行路由  
+		            ctx.setResponseStatusCode(200);
+				}else{
+					this.setErrorResponse(ctx, cr.getErrorCode());
+				}
+			}
         }
-        
         return null;
     }
     

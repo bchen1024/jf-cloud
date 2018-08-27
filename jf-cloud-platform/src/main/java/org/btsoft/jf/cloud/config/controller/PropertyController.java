@@ -46,7 +46,7 @@ public class PropertyController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建Property",descEN="Create I18n")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddPropertyDTO t) {
-		Property entity = EntityUtils.dtoToEntity(t, Property.class);
+		Property entity = EntityUtils.copyProperties(t, Property.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -56,7 +56,7 @@ public class PropertyController {
 		Property entity = new Property();
 		entity.setPropertyId(id);
 		Property result = service.findSingle(entity);
-		PropertyVO entityVO = EntityUtils.dtoToEntity(result, PropertyVO.class);
+		PropertyVO entityVO = EntityUtils.copyProperties(result, PropertyVO.class);
 		return CommonResultUtils.success(entityVO);
 	}
 
@@ -64,7 +64,7 @@ public class PropertyController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新Property",descEN="Update Property")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdatePropertyDTO t) {
-		Property entity = EntityUtils.dtoToEntity(t, Property.class);
+		Property entity = EntityUtils.copyProperties(t, Property.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -88,8 +88,8 @@ public class PropertyController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="Property列表",descEN="Property List")
 	public CommonResult<PageResult<PropertyVO>> findPageList(@RequestBody PagePropertyDTO t) {
-		Property entity = EntityUtils.dtoToEntity(t, Property.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		Property entity = EntityUtils.copyProperties(t, Property.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<Property> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(PropertyVO.class, result));
 	}

@@ -46,7 +46,7 @@ public class AppController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建应用",descEN="Create App")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddAppDTO t) {
-		App entity = EntityUtils.dtoToEntity(t, App.class);
+		App entity = EntityUtils.copyProperties(t, App.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -56,7 +56,7 @@ public class AppController {
 		App entity = new App();
 		entity.setAppId(id);
 		App result = service.findSingle(entity);
-		AppVO vo = EntityUtils.dtoToEntity(result, AppVO.class);
+		AppVO vo = EntityUtils.copyProperties(result, AppVO.class);
 		return CommonResultUtils.success(vo);
 	}
 
@@ -64,7 +64,7 @@ public class AppController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新应用",descEN="Update App")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdateAppDTO t) {
-		App entity = EntityUtils.dtoToEntity(t, App.class);
+		App entity = EntityUtils.copyProperties(t, App.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -88,8 +88,8 @@ public class AppController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="应用列表",descEN="App List")
 	public CommonResult<PageResult<AppVO>> findPageList(@RequestBody PageAppDTO t) {
-		App entity = EntityUtils.dtoToEntity(t, App.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		App entity = EntityUtils.copyProperties(t, App.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<App> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(AppVO.class, result));
 	}

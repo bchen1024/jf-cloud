@@ -46,7 +46,7 @@ public class LookupController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建Lookup",descEN="Create I18n")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddLookupDTO t) {
-		Lookup entity = EntityUtils.dtoToEntity(t, Lookup.class);
+		Lookup entity = EntityUtils.copyProperties(t, Lookup.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -56,7 +56,7 @@ public class LookupController {
 		Lookup entity = new Lookup();
 		entity.setCodeId(id);
 		Lookup result = service.findSingle(entity);
-		LookupVO entityVO = EntityUtils.dtoToEntity(result, LookupVO.class);
+		LookupVO entityVO = EntityUtils.copyProperties(result, LookupVO.class);
 		return CommonResultUtils.success(entityVO);
 	}
 
@@ -64,7 +64,7 @@ public class LookupController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新Lookup",descEN="Update Lookup")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdateLookupDTO t) {
-		Lookup entity = EntityUtils.dtoToEntity(t, Lookup.class);
+		Lookup entity = EntityUtils.copyProperties(t, Lookup.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -88,8 +88,8 @@ public class LookupController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="Lookup列表",descEN="Lookup List")
 	public CommonResult<PageResult<LookupVO>> findPageList(@RequestBody PageLookupDTO t) {
-		Lookup entity = EntityUtils.dtoToEntity(t, Lookup.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		Lookup entity = EntityUtils.copyProperties(t, Lookup.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<Lookup> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(LookupVO.class, result));
 	}

@@ -47,7 +47,7 @@ public class PermissionController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建权限点",descEN="Create Permission")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddPermissionDTO t) {
-		Permission entity = EntityUtils.dtoToEntity(t, Permission.class);
+		Permission entity = EntityUtils.copyProperties(t, Permission.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -57,7 +57,7 @@ public class PermissionController {
 		Permission entity = new Permission();
 		entity.setPermissionId(id);
 		Permission result = service.findSingle(entity);
-		PermissionVO vo = EntityUtils.dtoToEntity(result, PermissionVO.class);
+		PermissionVO vo = EntityUtils.copyProperties(result, PermissionVO.class);
 		return CommonResultUtils.success(vo);
 	}
 
@@ -65,7 +65,7 @@ public class PermissionController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新权限点",descEN="Update Permission")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdatePermissionDTO t) {
-		Permission entity = EntityUtils.dtoToEntity(t, Permission.class);
+		Permission entity = EntityUtils.copyProperties(t, Permission.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -89,8 +89,8 @@ public class PermissionController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="权限点列表",descEN="Permission List")
 	public CommonResult<PageResult<PermissionVO>> findPageList(@RequestBody PagePermissionDTO t) {
-		Permission entity = EntityUtils.dtoToEntity(t, Permission.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		Permission entity = EntityUtils.copyProperties(t, Permission.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<Permission> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(PermissionVO.class, result));
 	}

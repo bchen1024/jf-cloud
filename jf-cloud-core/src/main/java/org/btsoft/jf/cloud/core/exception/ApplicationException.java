@@ -66,6 +66,13 @@ public class ApplicationException extends RuntimeException implements Serializab
 		this.errorCode = errorCode;
 	}
 	
+	public ApplicationException(int httpCode,String errorCode,String message) {
+		super(errorCode);
+		this.httpCode=httpCode;
+		this.errorCode = errorCode;
+		this.message=message;
+	}
+	
 	public ApplicationException(int httpCode,String errorCode, Object[] args) {
 		super(errorCode);
 		this.httpCode=httpCode;

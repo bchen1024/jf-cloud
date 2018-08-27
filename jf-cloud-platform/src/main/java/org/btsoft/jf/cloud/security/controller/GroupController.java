@@ -46,7 +46,7 @@ public class GroupController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建群组",descEN="Create Group")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddGroupDTO t) {
-		Group entity = EntityUtils.dtoToEntity(t, Group.class);
+		Group entity = EntityUtils.copyProperties(t, Group.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -56,7 +56,7 @@ public class GroupController {
 		Group entity = new Group();
 		entity.setGroupId(id);
 		Group result = service.findSingle(entity);
-		GroupVO vo = EntityUtils.dtoToEntity(result, GroupVO.class);
+		GroupVO vo = EntityUtils.copyProperties(result, GroupVO.class);
 		return CommonResultUtils.success(vo);
 	}
 
@@ -64,7 +64,7 @@ public class GroupController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新群组",descEN="Update Group")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdateGroupDTO t) {
-		Group entity = EntityUtils.dtoToEntity(t, Group.class);
+		Group entity = EntityUtils.copyProperties(t, Group.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -88,8 +88,8 @@ public class GroupController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="群组列表",descEN="Group List")
 	public CommonResult<PageResult<GroupVO>> findPageList(@RequestBody PageGroupDTO t) {
-		Group entity = EntityUtils.dtoToEntity(t, Group.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		Group entity = EntityUtils.copyProperties(t, Group.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<Group> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(GroupVO.class, result));
 	}

@@ -27,7 +27,7 @@ public class PageResult<T> {
 	public PageResult(List<T> result, PageVO page, int total) {
 		this.result = result;
 		this.pageVO = page;
-		this.pageVO.setTotalRows(total);
+		this.pageVO.setTotal(total);
 	}
 
 	public List<T> getResult() {

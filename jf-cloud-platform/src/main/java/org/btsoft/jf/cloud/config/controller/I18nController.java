@@ -46,7 +46,7 @@ public class I18nController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建国际化",descEN="Create I18n")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddI18nDTO t) {
-		I18n entity = EntityUtils.dtoToEntity(t, I18n.class);
+		I18n entity = EntityUtils.copyProperties(t, I18n.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -56,7 +56,7 @@ public class I18nController {
 		I18n entity = new I18n();
 		entity.setI18nId(id);
 		I18n result = service.findSingle(entity);
-		I18nVO entityVO = EntityUtils.dtoToEntity(result, I18nVO.class);
+		I18nVO entityVO = EntityUtils.copyProperties(result, I18nVO.class);
 		return CommonResultUtils.success(entityVO);
 	}
 
@@ -64,7 +64,7 @@ public class I18nController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新国际化",descEN="Update I18n")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdateI18nDTO t) {
-		I18n entity = EntityUtils.dtoToEntity(t, I18n.class);
+		I18n entity = EntityUtils.copyProperties(t, I18n.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -88,8 +88,8 @@ public class I18nController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="国际化列表",descEN="I18n List")
 	public CommonResult<PageResult<I18nVO>> findPageList(@RequestBody PageI18nDTO t) {
-		I18n entity = EntityUtils.dtoToEntity(t, I18n.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		I18n entity = EntityUtils.copyProperties(t, I18n.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<I18n> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(I18nVO.class, result));
 	}

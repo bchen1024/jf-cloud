@@ -2,6 +2,7 @@ package org.btsoft.jf.cloud.security.service.impl;
 
 import java.util.List;
 
+import org.btsoft.jf.cloud.core.auth.context.RequestContext;
 import org.btsoft.jf.cloud.core.base.dto.PageDTO;
 import org.btsoft.jf.cloud.core.base.result.PageResult;
 import org.btsoft.jf.cloud.core.util.PageResultUtils;
@@ -50,6 +51,7 @@ public class AppService implements IAppService {
 
 	@Override
 	public PageResult<App> findPageList(App entity, PageDTO pageDTO) {
+		System.out.println(RequestContext.getCurrent().getUser().getUserAccount());
 		PageHelper.startPage(pageDTO.getCurPage(), pageDTO.getPageSize());
 		List<App> result = mapper.findPageList(entity);
 		return PageResultUtils.toPageResult(result, pageDTO);

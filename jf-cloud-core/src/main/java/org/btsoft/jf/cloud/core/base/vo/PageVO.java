@@ -24,7 +24,7 @@ public class PageVO implements Serializable {
 	/**
 	 * 总记录数
 	 */
-	private long totalRows;
+	private long total;
 
 	/**
 	 * 总页数
@@ -47,16 +47,16 @@ public class PageVO implements Serializable {
 		this.pageSize = pageSize;
 	}
 
-	public long getTotalRows() {
-		return totalRows;
+	public long getTotal() {
+		return total;
 	}
 
-	public void setTotalRows(long totalRows) {
-		this.totalRows = totalRows;
+	public void setTotal(long total) {
+		this.total = total;
 	}
 
 	public int getTotalPages() {
-		this.totalPages = (int) Math.floor((double) ((this.totalRows + this.pageSize - 1) / this.pageSize));
+		this.totalPages = (int) Math.floor((double) ((this.total + this.pageSize - 1) / this.pageSize));
 		return totalPages;
 	}
 

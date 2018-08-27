@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.security.mapper.IUserMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.core.auth.entity.UserInfo">
+		<result column="enable_flag" property="enableFlag"/>
+		<result column="create_by" property="createBy"/>
+		<result column="creation_date" property="creationDate"/>
+		<result column="last_update_by" property="lastUpdateBy"/>
+		<result column="last_updation_date" property="lastUpdationDate"/>
+
+		<result column="user_id" property="userId" />
+		<result column="user_account" property="userAccount" />
+		<result column="user_name" property="userName" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_tel" property="userTel" />
+		<result column="employee_no" property="employeeNo" />
+		<result column="user_type" property="userType" />
+		<result column="user_status" property="userStatus" />
+	</resultMap>
+
+	<sql id="base_sql">
+		select
+			*
+		from sys_user_t t
+	</sql>
+
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+            <if test='vo.userAccount!=null and vo.userAccount!=""'>
+                and t.user_account like concat('%',trim(#{vo.userAccount,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='vo.userName!=null and vo.userName!=""'>
+                and t.user_name like concat('%',trim(#{vo.userName,jdbcType=VARCHAR}),'%')
+            </if>
+		</trim>
+	</sql>
+
+	<insert id="createSingle">
+		replace into sys_user_t (
+			user_id,
+			user_account,
+			user_name,
+			user_email,
+			user_tel,
+			employee_no,
+			user_type,
+			user_status,
+			create_by,
+			last_update_by
+		)values(
+		    #{vo.userId,jdbcType=NUMERIC},
+			#{vo.userAccount,jdbcType=VARCHAR},
+			#{vo.userName,jdbcType=VARCHAR},
+			#{vo.userEmail,jdbcType=VARCHAR},
+			#{vo.userTel,jdbcType=NUMERIC},
+			#{vo.employeeNo,jdbcType=VARCHAR},
+			#{vo.userType,jdbcType=VARCHAR},
+			#{vo.userStatus,jdbcType=VARCHAR},
+			#{vo.currentUserId,jdbcType=NUMERIC},
+			#{vo.currentUserId,jdbcType=NUMERIC}
+		)
+	</insert>
+
+    <select id="findSingle" resultMap="sqlResultMap">
+        <include refid="base_sql"/>
+        <trim prefix="where" prefixOverrides="and || or">
+            <if test='vo.userAccount!=null and vo.userAccount!=""'>
+                and t.user_account = trim(#{vo.userAccount,jdbcType=VARCHAR})
+            </if>
+            <if test='vo.userId!=null and vo.userId!=""'>
+                and t.user_id =#{vo.userId,jdbcType=NUMERIC}
+            </if>
+		</trim>
+    </select>
+
+	<delete id="deleteSingle">
+		delete from sys_user_t where user_id=#{vo.userId,jdbcType=NUMERIC}
+	</delete>
+	
+	<delete id="deleteMultiple">
+		delete from sys_user_t where
+		<foreach collection="list" item="item" open=" user_id in(" separator="," close=")">
+			#{item.userId,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
+
+	<update id="updateSingle">
+		update sys_user_t t set
+			t.user_name=#{vo.userName,jdbcType=VARCHAR},
+			t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+			t.last_updation_date=now()
+		where t.user_id=#{vo.userId,jdbcType=NUMERIC}
+	</update>
+	
+	<select id="findPageList" resultMap="sqlResultMap">
+		<include refid="base_sql"/>
+		<include refid="base_condition"/>
+	</select>
+
+</mapper>

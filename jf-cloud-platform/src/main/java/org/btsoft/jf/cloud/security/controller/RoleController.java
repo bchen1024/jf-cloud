@@ -46,7 +46,7 @@ public class RoleController {
 	@JOperator(code=ControllerContants.JOPERATOR.CREATE,descCN="创建角色",descEN="Create Role")
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody @Valid AddRoleDTO t) {
-		Role entity = EntityUtils.dtoToEntity(t, Role.class);
+		Role entity = EntityUtils.copyProperties(t, Role.class);
 		return CommonResultUtils.success(service.createSingle(entity));
 	}
 
@@ -56,7 +56,7 @@ public class RoleController {
 		Role entity = new Role();
 		entity.setRoleId(id);
 		Role result = service.findSingle(entity);
-		RoleVO vo = EntityUtils.dtoToEntity(result, RoleVO.class);
+		RoleVO vo = EntityUtils.copyProperties(result, RoleVO.class);
 		return CommonResultUtils.success(vo);
 	}
 
@@ -64,7 +64,7 @@ public class RoleController {
 	@JOperator(code=ControllerContants.JOPERATOR.UPDATE,descCN="更新角色",descEN="Update Role")
 	@JAuditLog
 	public CommonResult<Integer> updateSingle(@RequestBody @Valid UpdateRoleDTO t) {
-		Role entity = EntityUtils.dtoToEntity(t, Role.class);
+		Role entity = EntityUtils.copyProperties(t, Role.class);
 		return CommonResultUtils.success(service.updateSingle(entity));
 	}
 
@@ -88,8 +88,8 @@ public class RoleController {
 	@PostMapping(ControllerContants.PATH.PAGE)
 	@JOperator(code=ControllerContants.JOPERATOR.PAGE,descCN="角色列表",descEN="Role List")
 	public CommonResult<PageResult<RoleVO>> findPageList(@RequestBody PageRoleDTO t) {
-		Role entity = EntityUtils.dtoToEntity(t, Role.class);
-		PageDTO pageDTO = EntityUtils.dtoToEntity(t, PageDTO.class);
+		Role entity = EntityUtils.copyProperties(t, Role.class);
+		PageDTO pageDTO = EntityUtils.copyProperties(t, PageDTO.class);
 		PageResult<Role> result = service.findPageList(entity, pageDTO);
 		return CommonResultUtils.success(PageResultUtils.entityToVO(RoleVO.class, result));
 	}
