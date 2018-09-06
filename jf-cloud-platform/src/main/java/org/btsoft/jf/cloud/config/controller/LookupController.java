@@ -5,12 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.btsoft.jf.cloud.config.entity.Lookup;
+import org.btsoft.jf.cloud.config.pojo.dto.AddLookupDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.DeleteLookupDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.PageLookupDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.UpdateLookupDTO;
+import org.btsoft.jf.cloud.config.pojo.vo.LookupVO;
 import org.btsoft.jf.cloud.config.service.ILookupService;
-import org.btsoft.jf.cloud.config.web.dto.lookup.AddLookupDTO;
-import org.btsoft.jf.cloud.config.web.dto.lookup.DeleteLookupDTO;
-import org.btsoft.jf.cloud.config.web.dto.lookup.PageLookupDTO;
-import org.btsoft.jf.cloud.config.web.dto.lookup.UpdateLookupDTO;
-import org.btsoft.jf.cloud.config.web.vo.lookup.LookupVO;
 import org.btsoft.jf.cloud.core.annotation.JAuditLog;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;

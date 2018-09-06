@@ -32,7 +32,6 @@ public class AuditLogService implements IAuditLogService {
 
 	@Override
 	public PageResult<AuditLog> findPageList(AuditLog t, PageDTO pageDTO) {
-		System.out.println(RequestContext.getCurrent().getUser().getUserAccount());
 		PageHelper.startPage(pageDTO.getCurPage(), pageDTO.getPageSize());
 		List<AuditLog> result = mapper.findPageList(t);
 		return PageResultUtils.toPageResult(result, pageDTO);

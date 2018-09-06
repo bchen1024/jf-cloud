@@ -5,12 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.btsoft.jf.cloud.config.entity.Property;
+import org.btsoft.jf.cloud.config.pojo.dto.AddPropertyDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.DeletePropertyDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.PagePropertyDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.UpdatePropertyDTO;
+import org.btsoft.jf.cloud.config.pojo.vo.PropertyVO;
 import org.btsoft.jf.cloud.config.service.IPropertyService;
-import org.btsoft.jf.cloud.config.web.dto.property.AddPropertyDTO;
-import org.btsoft.jf.cloud.config.web.dto.property.DeletePropertyDTO;
-import org.btsoft.jf.cloud.config.web.dto.property.PagePropertyDTO;
-import org.btsoft.jf.cloud.config.web.dto.property.UpdatePropertyDTO;
-import org.btsoft.jf.cloud.config.web.vo.property.PropertyVO;
 import org.btsoft.jf.cloud.core.annotation.JAuditLog;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;

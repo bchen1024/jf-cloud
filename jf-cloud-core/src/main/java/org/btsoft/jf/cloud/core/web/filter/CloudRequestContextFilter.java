@@ -18,6 +18,8 @@ import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
 import org.btsoft.jf.cloud.core.base.result.CommonResult;
 import org.btsoft.jf.cloud.core.base.service.IUserQueryService;
 import org.btsoft.jf.cloud.core.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 
@@ -26,9 +28,9 @@ import org.springframework.core.annotation.Order;
  * @author chenbin
  * @date 2018年7月5日 下午11:10:36
  */
-@Order(-200)
-@WebFilter(filterName="cloudRequestContextFilter",urlPatterns={"/**"})
 public class CloudRequestContextFilter implements Filter {
+	
+	private final static Logger logger = LoggerFactory.getLogger(CloudRequestContextFilter.class);
 	
 	@Autowired
 	private IUserQueryService userQueryService;

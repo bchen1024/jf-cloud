@@ -107,7 +107,7 @@ public class DESEncrypt {
 
 	public static String createJWT(String userAccount, long expirationTime, String signingKeyStr) {
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(signingKeyStr);
+		byte[] apiKeySecretBytes =  DatatypeConverter.parseBase64Binary(signingKeyStr);
 		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 		long now = System.currentTimeMillis();
 		Date nowDate = new Date(now);

@@ -51,7 +51,6 @@ public class AppService implements IAppService {
 
 	@Override
 	public PageResult<App> findPageList(App entity, PageDTO pageDTO) {
-		System.out.println(RequestContext.getCurrent().getUser().getUserAccount());
 		PageHelper.startPage(pageDTO.getCurPage(), pageDTO.getPageSize());
 		List<App> result = mapper.findPageList(entity);
 		return PageResultUtils.toPageResult(result, pageDTO);

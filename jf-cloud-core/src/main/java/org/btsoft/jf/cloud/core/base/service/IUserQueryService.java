@@ -1,5 +1,8 @@
 package org.btsoft.jf.cloud.core.base.service;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
 import org.btsoft.jf.cloud.core.base.result.CommonResult;
 
@@ -11,4 +14,6 @@ import org.btsoft.jf.cloud.core.base.result.CommonResult;
 public interface IUserQueryService {
 
 	CommonResult<UserInfo> findUserByToken(String token);
+	
+	CommonResult<List<UserInfo>> findUserListById(Collection<Long> userIdList);
 }

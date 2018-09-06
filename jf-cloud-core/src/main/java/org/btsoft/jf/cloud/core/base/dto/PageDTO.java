@@ -11,8 +11,6 @@ public class PageDTO extends BaseDTO {
 	private int curPage = 1;
 
 	private int pageSize = 15;
-	
-	
 
 	public int getCurPage() {
 		return curPage;

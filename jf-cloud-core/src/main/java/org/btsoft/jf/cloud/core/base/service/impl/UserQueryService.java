@@ -1,6 +1,8 @@
 package org.btsoft.jf.cloud.core.base.service.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
@@ -39,6 +41,11 @@ public class UserQueryService implements IUserQueryService {
 				new TypeReference<CommonResult<UserInfo>>() {
 				});
 		return result;
+	}
+
+	@Override
+	public CommonResult<List<UserInfo>> findUserListById(Collection<Long> userIdList) {
+		return null;
 	}
 
 }

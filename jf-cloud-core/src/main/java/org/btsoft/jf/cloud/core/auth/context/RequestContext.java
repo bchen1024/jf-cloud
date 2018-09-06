@@ -22,6 +22,10 @@ public class RequestContext implements Serializable {
 		}
 		return rc; 
 	}
+	
+	public static RequestContext getCurrent(boolean allowNull) {
+		return RequestManagement.getCurrent();
+	}
 
 	public RequestUser getUser() {
 		return user;

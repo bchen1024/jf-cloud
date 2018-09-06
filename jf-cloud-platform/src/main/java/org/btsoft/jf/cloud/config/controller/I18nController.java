@@ -5,12 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.btsoft.jf.cloud.config.entity.I18n;
+import org.btsoft.jf.cloud.config.pojo.dto.AddI18nDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.DeleteI18nDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.PageI18nDTO;
+import org.btsoft.jf.cloud.config.pojo.dto.UpdateI18nDTO;
+import org.btsoft.jf.cloud.config.pojo.vo.I18nVO;
 import org.btsoft.jf.cloud.config.service.II18nService;
-import org.btsoft.jf.cloud.config.web.dto.i18n.AddI18nDTO;
-import org.btsoft.jf.cloud.config.web.dto.i18n.DeleteI18nDTO;
-import org.btsoft.jf.cloud.config.web.dto.i18n.PageI18nDTO;
-import org.btsoft.jf.cloud.config.web.dto.i18n.UpdateI18nDTO;
-import org.btsoft.jf.cloud.config.web.vo.i18n.I18nVO;
 import org.btsoft.jf.cloud.core.annotation.JAuditLog;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;
