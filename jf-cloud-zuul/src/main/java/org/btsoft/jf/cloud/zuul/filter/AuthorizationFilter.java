@@ -14,6 +14,11 @@ import com.alibaba.fastjson.JSON;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
+/**
+ * 
+ * @author chenbin
+ *
+ */
 @Component
 public class AuthorizationFilter extends ZuulFilter {
 

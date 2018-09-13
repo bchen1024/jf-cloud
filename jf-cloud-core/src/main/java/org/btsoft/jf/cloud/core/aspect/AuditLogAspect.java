@@ -62,6 +62,7 @@ public class AuditLogAspect {
 		try {
 			logger.debug("Audit log start...");
 			Long startTime=LOCAL_AUDIT.get();
+			LOCAL_AUDIT.remove();
 			Long endTime=System.currentTimeMillis();
 			// 获取拦截的方法
 			Signature signature = joinPoint.getSignature();

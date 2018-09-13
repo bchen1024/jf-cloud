@@ -60,21 +60,25 @@ public class DESEncrypt {
 	 * @created 2014-6-10 下午11:18:32
 	 */
 	public static String dncrypt(String s) {
-		if (s == null || s.length() < 1)
+		if (s == null || s.length() < 1) {
 			return null;
+		}
 		char ch;
 		String[] strs = s.split("[G-Pg-p]");
 		byte[] bt = new byte[strs.length];
 		for (int i = 0; i < bt.length; i++) {
 			ch = strs[i].charAt(0);
-			if ((ch >= 'Q' && ch <= 'Z') || (ch >= 'q' && ch <= 'z'))
+			if ((ch >= 'Q' && ch <= 'Z') || (ch >= 'q' && ch <= 'z')) {
 				bt[i] = (byte) -Byte.parseByte(strs[i].substring(1), 16);
-			else
+			}
+			else {
 				bt[i] = Byte.parseByte(strs[i], 16);
+			}
 		}
 		byte[] bytes = encrypt(bt, Cipher.DECRYPT_MODE);
-		if (bytes == null || bytes.length < 1)
+		if (bytes == null || bytes.length < 1) {
 			return null;
+		}
 		return new String(bytes);
 	}
 

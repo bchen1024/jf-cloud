@@ -1,5 +1,7 @@
 package org.btsoft.jf.cloud.sso.auth.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.btsoft.jf.cloud.sso.auth.entity.User;
 
@@ -31,5 +33,12 @@ public interface IUserMapper {
 	 * @return
 	 */
 	int updateUserPwdErrorAndLockTime(User user);
+	
+	/**
+	 * 根据用户id获取用户列表
+	 * @param userIdSet
+	 * @return
+	 */
+	List<User> findUserListById(List<Long> userIdList);
 	
 }

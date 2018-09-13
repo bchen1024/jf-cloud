@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;
-import org.btsoft.jf.cloud.core.auth.context.RequestContext;
 import org.btsoft.jf.cloud.core.context.JFCloud;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +52,7 @@ public class PermissionAspect {
     	StringBuffer sb=new StringBuffer();
     	sb.append(JFCloud.getAppCode()).append("$").append(jr.code()).append("$").append(jo.code());
     	
-    	RequestContext rc=RequestContext.getCurrent(true);
+    	//RequestContext rc=RequestContext.getCurrent(true);
     	logger.info(String.format("Permission code is [%s]", sb));
     }
 

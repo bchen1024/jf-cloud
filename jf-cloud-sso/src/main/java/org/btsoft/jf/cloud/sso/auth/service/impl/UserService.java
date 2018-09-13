@@ -1,7 +1,15 @@
 package org.btsoft.jf.cloud.sso.auth.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
 import org.btsoft.jf.cloud.core.exception.ApplicationException;
 import org.btsoft.jf.cloud.core.util.DESEncrypt;
@@ -142,6 +150,34 @@ public class UserService implements IUserService {
 		user.setPwdError(pwdError);
 		user.setLockTime(lockTime);
 		mapper.updateUserPwdErrorAndLockTime(user);
+	}
+
+	@Override
+	public List<User> findUserListById(List<Long> userIdList) {
+		if(CollectionUtils.isEmpty(userIdList)) {
+			return Collections.emptyList();
+		}
+		//去重
+		Set<Long> userIdSet=new HashSet<Long>();
+		userIdSet.addAll(userIdList);
+		
+		userIdList=new ArrayList<Long>();
+		userIdList.addAll(userIdSet);
+		return mapper.findUserListById(userIdList);
+	}
+
+	@Override
+	public Map<Long, UserInfo> findUserMapById(List<Long> userIdList) {
+		List<User> userList=this.findUserListById(userIdList);
+		Map<Long, UserInfo> result=new HashMap<Long, UserInfo>();
+		if(!CollectionUtils.isEmpty(userList)) {
+			userList.forEach(user->{
+				UserInfo userInfo=new UserInfo();
+				BeanUtils.copyProperties(user, userInfo);
+				result.put(user.getUserId(), userInfo);
+			});
+		}
+		return result;
 	}
 
 }

@@ -1,5 +1,8 @@
 package org.btsoft.jf.cloud.core.base.vo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.btsoft.jf.cloud.core.base.entity.BaseAuditEntity;
 
 /**
@@ -10,5 +13,15 @@ import org.btsoft.jf.cloud.core.base.entity.BaseAuditEntity;
 public class BaseVO extends BaseAuditEntity{
 
 	private static final long serialVersionUID = -6091893742007419951L;
+	
+	private Map<String,Object> attributes=new HashMap<String,Object>();
+
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
+	}
 
 }

@@ -1,6 +1,7 @@
 package org.btsoft.jf.cloud.core.base.dto;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * DTO基类
@@ -14,6 +15,11 @@ public class BaseDTO implements Serializable {
 	 * 应用code
 	 */
 	private String appCode;
+	
+	/**
+	 * 扩展属性
+	 */
+	private Map<String, Object> attributes;
 
 	public String getAppCode() {
 		return appCode;
@@ -23,4 +29,11 @@ public class BaseDTO implements Serializable {
 		this.appCode = appCode;
 	}
 
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
+	}
 }
