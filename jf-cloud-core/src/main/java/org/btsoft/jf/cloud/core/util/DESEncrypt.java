@@ -136,8 +136,4 @@ public class DESEncrypt {
 				.parseClaimsJws(jwt).getBody();
 		return claim;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(DESEncrypt.encrypt("chenbin"));
-	}
 }

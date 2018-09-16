@@ -70,6 +70,7 @@
 	<select id="findPageList" resultMap="sqlResultMap">
 		<include refid="base_sql" />
 		<include refid="base_condition" />
+		order by t.log_time desc
 	</select>
 
 </mapper>

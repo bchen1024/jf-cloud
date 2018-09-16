@@ -49,6 +49,7 @@ public class AuthorizationFilter extends ZuulFilter {
         	ctx.setSendZuulResponse(false);// 过滤该请求，不对其进行路由  
             ctx.setResponseStatusCode(200);// 返回错误码  
             ctx.setResponseBody("success");
+            return null;
         }
         logger.debug(String.format("[%s] %s",request.getMethod(),uri));
         
