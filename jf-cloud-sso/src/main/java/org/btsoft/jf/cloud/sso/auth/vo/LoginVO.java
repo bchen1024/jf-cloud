@@ -2,19 +2,21 @@ package org.btsoft.jf.cloud.sso.auth.vo;
 
 import java.io.Serializable;
 
-import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.btsoft.jf.cloud.core.auth.user.UserInfo;
 
 /**
+ * 登录VO
  * 
  * @author chenbin
- * @date 2018年6月28日 下午9:51:50
+ * @date 2018-11-27 23:10
  */
 public class LoginVO implements Serializable {
 
-	private static final long serialVersionUID = -8860339639735032411L;
+	private static final long serialVersionUID = -388341936334362129L;
 
 	private UserInfo user;
-	
+
 	private String token;
 
 	public UserInfo getUser() {
@@ -32,5 +34,9 @@ public class LoginVO implements Serializable {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 }

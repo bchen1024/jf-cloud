@@ -7,13 +7,18 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Druid配置类
+ * @author chenbin
+ * @date 2018-11-27 22:42
+ */
 @Configuration
 public class DruidConfig {
 
     /**
      * 注册ServletRegistrationBean
      * @return
-     *//**/
+     */
     @Bean
     public ServletRegistrationBean registrationBean() {
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");

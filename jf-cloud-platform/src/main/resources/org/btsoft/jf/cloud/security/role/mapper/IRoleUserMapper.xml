@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.security.role.mapper.IRoleUserMapper">
+	
+	<select id="findRoleListByUser" resultType="hashmap">
+		SELECT 
+		    R.ROLE_ID   AS "roleId", 
+		    R.ROLE_CODE AS "roleCode",
+		    R.ROLE_NAME AS "roleName",
+		    R.ROLE_DESC AS "roleDesc"
+		FROM
+		    SYS_ROLE_USER_RT UR
+		        INNER JOIN
+		    SYS_ROLE_T R ON R.ROLE_ID = UR.ROLE_ID
+		        AND R.ENABLE_FLAG = 'Y'
+		        <if test="attributes!=null and attributes.appCode!=null">
+		        	AND R.APP_CODE = #{attributes.appCode,jdbcType=VARCHAR}
+		        </if>
+		WHERE UR.ENABLE_FLAG = 'Y' 
+		  AND DATE(NOW()) BETWEEN UR.BEGIN_DATE AND UR.END_DATE
+		  AND UR.USER_ID = #{userId,jdbcType=NUMERIC}
+		  AND UR.APP_CODE = #{appCode,jdbcType=VARCHAR}
+		  UNION
+		SELECT 
+		    R.ROLE_ID, 
+			R.ROLE_CODE,
+			R.ROLE_NAME,
+			R.ROLE_DESC
+		FROM
+		    SYS_GROUP_USER_RT GU
+		        INNER JOIN
+		    SYS_GROUP_ROLE_RT GR ON GR.ENABLE_FLAG = 'Y'
+		        AND GR.GROUP_ID = GU.GROUP_ID
+		        INNER JOIN
+		    SYS_ROLE_T R ON R.ENABLE_FLAG = 'Y'
+		        AND R.ROLE_ID = GR.ROLE_ID
+		        <if test="attributes!=null and attributes.appCode!=null">
+		        	AND R.APP_CODE = #{attributes.appCode,jdbcType=VARCHAR}
+		        </if>
+		WHERE
+		    GU.ENABLE_FLAG = 'Y'
+		        AND DATE(NOW()) BETWEEN GU.BEGIN_DATE AND GU.END_DATE
+		        AND GU.USER_ID =#{userId,jdbcType=NUMERIC}
+		        AND GU.APP_CODE = #{appCode,jdbcType=VARCHAR}
+	</select>
+</mapper>

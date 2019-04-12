@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.security.role.mapper.IRoleMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.security.role.entity.Role">
+		<result column="app_code" property="appCode"/>
+		<result column="enable_flag" property="enableFlag"/>
+		<result column="create_by" property="createBy"/>
+		<result column="creation_date" property="creationDate"/>
+		<result column="last_update_by" property="lastUpdateBy"/>
+		<result column="last_updation_date" property="lastUpdationDate"/>
+
+		<result column="role_id" property="roleId"/>
+		<result column="role_code" property="roleCode"/>
+		<result column="role_name" property="roleName"/>
+		<result column="role_owner" property="roleOwner"/>
+		<result column="role_desc" property="roleDesc"/>
+		<result column="apply_status" property="applyStatus"/>
+	</resultMap>
+
+	<sql id="base_sql">
+		select
+			t.role_id,
+			t.role_code,
+			t.role_name,
+			t.role_owner,
+			t.role_desc,
+			t.apply_status,
+			t.app_code,
+			t.enable_flag,
+			t.create_by,
+			t.creation_date,
+			t.last_update_by,
+			t.last_updation_date
+		from sys_role_t t
+	</sql>
+
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+		    t.app_code=#{vo.appCode,jdbcType=VARCHAR}
+            <if test='vo.roleCode!=null and vo.roleCode!=""'>
+                and t.role_code like concat('%',trim(#{vo.roleCode,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='vo.roleName!=null and vo.roleName!=""'>
+                and t.role_name like concat('%',trim(#{vo.roleName,jdbcType=VARCHAR}),'%')
+            </if>
+		</trim>
+	</sql>
+
+	<insert id="createSingle">
+		insert into sys_role_t (
+			role_code,
+			role_name,
+			role_desc,
+			role_owner,
+			apply_status,
+			app_code,
+			create_by,
+			last_update_by
+		)values(
+			#{vo.roleCode,jdbcType=VARCHAR},
+			#{vo.roleName,jdbcType=VARCHAR},
+			#{vo.roleDesc,jdbcType=VARCHAR},
+			#{vo.roleOwner,jdbcType=NUMERIC},
+			#{vo.applyStatus,jdbcType=VARCHAR},
+			#{vo.appCode,jdbcType=VARCHAR},
+			#{vo.currentUserId,jdbcType=NUMERIC},
+			#{vo.currentUserId,jdbcType=NUMERIC}
+		)
+	</insert>
+
+    <select id="findSingle" resultMap="sqlResultMap">
+        <include refid="base_sql"/>
+        where t.role_id=#{vo.roleId,jdbcType=NUMERIC}
+    </select>
+
+	<delete id="deleteSingle">
+		delete from sys_role_t where role_id=#{vo.roleId,jdbcType=NUMERIC}
+	</delete>
+	
+	<delete id="deleteMultiple">
+		delete from sys_role_t where
+		<foreach collection="vo.list" item="item" open=" role_id in(" separator="," close=")">
+			#{item.roleId,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
+
+	<update id="updateSingle">
+		update sys_role_t t set
+			t.role_code=#{vo.roleCode,jdbcType=VARCHAR},
+			t.role_name=#{vo.roleName,jdbcType=VARCHAR},
+			t.role_desc=#{vo.roleDesc,jdbcType=VARCHAR},
+			t.apply_status=#{vo.applyStatus,jdbcType=VARCHAR},
+			t.role_owner=#{vo.roleOwner,jdbcType=NUMERIC},
+			t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+			t.last_updation_date=now()
+		where t.role_id=#{vo.roleId,jdbcType=NUMERIC}
+	</update>
+	
+	<update id="patchSingle">
+		update sys_role_t t set
+			<if test="vo.roleCode!=null">
+				t.role_code=#{vo.roleCode,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.roleName!=null">
+				t.role_name=#{vo.roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.roleDesc!=null">
+				t.role_desc=#{vo.roleDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.applyStatus!=null">
+				t.apply_status=#{vo.applyStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="vo.roleOwner!=null">
+				t.role_owner=#{vo.roleOwner,jdbcType=NUMERIC},
+			</if>
+			t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+			t.last_updation_date=now()
+		where t.role_id=#{vo.roleId,jdbcType=NUMERIC}
+	</update>
+
+	<select id="findList" resultMap="sqlResultMap">
+		<include refid="base_sql"/>
+		<include refid="base_condition"/>
+	</select>
+
+	<select id="findRoleList" resultType="hashmap">
+		select t.
+	</select>
+</mapper>

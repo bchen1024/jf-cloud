@@ -2,20 +2,22 @@ package org.btsoft.jf.cloud.sso.auth.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
+ * 登录DTO
  * 
  * @author chenbin
- * @date 2018年6月28日 下午9:53:44
+ * @date 2018-11-27 23:04
  */
-public class LoginDTO implements Serializable{
+public class LoginDTO implements Serializable {
 
-	private static final long serialVersionUID = -7853826842213268882L;
+	private static final long serialVersionUID = -3464221616175516587L;
 
 	@NotBlank
 	private String userAccount;
-	
+
 	@NotBlank
 	private String password;
 
@@ -34,5 +36,10 @@ public class LoginDTO implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
 }

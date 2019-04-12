@@ -21,47 +21,47 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/**
+ * Swagger配置类
+ * @author chenbin
+ * @date 2018-11-27 22:41
+ */
 @Configuration
 public class SwaggerConfig {
-	
+
 	@Value("${jf.cloud.swagger.title:JF Cloud Swagger Title}")
 	private String title;
-	
+
 	@Value("${jf.cloud.swagger.description:JF Cloud Swagger Description}")
 	private String description;
-	
+
 	@Value("${jf.cloud.swagger.version:1.0}")
 	private String version;
-	
+
 	@Value("${jf.cloud.swagger.name:userName}")
 	private String name;
-	
+
 	@Value("${jf.cloud.swagger.url:}")
 	private String url;
-	
+
 	@Value("${jf.cloud.swagger.email:}")
 	private String email;
-	
+
 	@Value("${jf.cloud.swagger.basePackage:org.btsoft.jf.cloud}")
 	private String basePackage;
-	
 
-    @Bean
-    public Docket apiDocket(){
-    	ParameterBuilder pb=new ParameterBuilder();
-    	List<Parameter> pars = new ArrayList<Parameter>();
-    	pb.name("Authorization").description("Token令牌")
-    		.parameterType("header").modelRef(new ModelRef("String")).build();
-    	pars.add(pb.build());
-        ApiInfo apiInfo=new ApiInfoBuilder().title(title)
-                .description(description)
-                .termsOfServiceUrl("").version(version)
-                .contact(new Contact(name,url,email)).build();
-        Predicate<RequestHandler> apiSelector= RequestHandlerSelectors
-                .basePackage(basePackage);
-        Predicate<String> pathSelecter= PathSelectors.any();
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo).select()
-                .apis(apiSelector).paths(pathSelecter).build()
-                .globalOperationParameters(pars);
-    }
+	@Bean
+	public Docket apiDocket() {
+		ParameterBuilder pb = new ParameterBuilder();
+		List<Parameter> pars = new ArrayList<Parameter>();
+		pb.name("Authorization").description("Token令牌").parameterType("header").modelRef(new ModelRef("String"))
+				.build();
+		pars.add(pb.build());
+		ApiInfo apiInfo = new ApiInfoBuilder().title(title).description(description).termsOfServiceUrl("")
+				.version(version).contact(new Contact(name, url, email)).build();
+		Predicate<RequestHandler> apiSelector = RequestHandlerSelectors.basePackage(basePackage);
+		Predicate<String> pathSelecter = PathSelectors.any();
+		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo).select().apis(apiSelector).paths(pathSelecter)
+				.build().globalOperationParameters(pars);
+	}
 }

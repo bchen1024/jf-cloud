@@ -1,27 +1,20 @@
 package org.btsoft.jf.cloud.core.base.vo;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.btsoft.jf.cloud.core.base.entity.BaseAuditEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.btsoft.jf.cloud.core.base.entity.AuditEntity;
 
 /**
- * 
+ * @desc 
  * @author chenbin
- * @date 2018年6月8日 下午9:31:42
+ * @date 2018年10月21日 下午11:40:48
  */
-public class BaseVO extends BaseAuditEntity{
+public class BaseVO extends AuditEntity{
 
-	private static final long serialVersionUID = -6091893742007419951L;
+	private static final long serialVersionUID = 5868340340005413923L;
 	
-	private Map<String,Object> attributes=new HashMap<String,Object>();
-
-	public Map<String, Object> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(Map<String, Object> attributes) {
-		this.attributes = attributes;
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

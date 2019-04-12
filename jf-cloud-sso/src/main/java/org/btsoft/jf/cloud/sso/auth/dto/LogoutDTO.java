@@ -2,12 +2,14 @@ package org.btsoft.jf.cloud.sso.auth.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
+ * 登出DTO
  * 
  * @author chenbin
- * @date 2018年7月1日 上午12:06:00
+ * @date 2018-11-27 23:07
  */
 public class LogoutDTO implements Serializable {
 
@@ -24,4 +26,8 @@ public class LogoutDTO implements Serializable {
 		this.token = token;
 	}
 
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 }

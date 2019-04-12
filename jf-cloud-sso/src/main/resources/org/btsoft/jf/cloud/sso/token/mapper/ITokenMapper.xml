@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.sso.token.mapper.ITokenMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.sso.token.entity.Token">
+		<result column="user_account" property="userAccount" />
+		<result column="token" property="token" />
+		<result column="token_type" property="tokenType" />
+		<result column="creation_date" property="creationDate" />
+	</resultMap>
+	
+	<sql id="base_sql">
+		select
+			user_account,
+			token,
+			token_type,
+			creation_date
+		from sys_token_t t
+	</sql>
+	
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+            <if test='vo.userAccount!=null and vo.userAccount!=""'>
+                and user_account like concat('%',trim(#{vo.userAccount,jdbcType=VARCHAR}),'%')
+            </if>
+		</trim>
+	</sql>
+
+	<insert id="createSingle">
+		replace into sys_token_t
+			(
+				user_account,
+			 	token,
+			 	token_type,
+			 	creation_date
+			)
+			values(
+				#{vo.userAccount,jdbcType=VARCHAR},
+				#{vo.token,jdbcType=VARCHAR},
+				#{vo.tokenType,jdbcType=VARCHAR},
+				now()
+			);
+	</insert>
+
+	<sql id="query_sql">
+		<trim prefix="where" prefixOverrides="and || or">
+            <if test='vo.userAccount!=null and vo.userAccount!=""'>
+                and user_account=#{vo.userAccount,jdbcType=VARCHAR} 
+            </if>
+            <if test='vo.token!=null and vo.token!=""'>
+                and token=#{vo.token,jdbcType=VARCHAR}
+            </if>
+            <if test='(vo.token==null or vo.token=="") and (vo.userAccount==null or vo.userAccount=="")'>
+                and 1=2
+            </if>
+		</trim>
+	</sql>
+	<select id="findSingle" resultMap="sqlResultMap">
+		<include refid="base_sql"/>
+		<include refid="query_sql"/>
+	</select>
+
+	<delete id="deleteSingle">
+		delete from sys_user_token_t 
+		<include refid="query_sql"/>
+	</delete>
+	
+	<select id="findList" resultMap="sqlResultMap">
+		<include refid="base_sql"/>
+		<include refid="base_condition"/>
+	</select>
+</mapper>

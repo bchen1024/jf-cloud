@@ -58,7 +58,7 @@ public class AuthorizationFilter extends ZuulFilter {
         	ctx.setSendZuulResponse(true);// 对该请求进行路由  
             ctx.setResponseStatusCode(200);
         }else{
-        	//获取鉴权token
+        	//获取鉴权token，优先从Header中获取，取不到再从入
 			String token=request.getHeader("Authorization");
 			if(StringUtils.isEmpty(token)) {
 				token=request.getParameter("token");
@@ -71,6 +71,7 @@ public class AuthorizationFilter extends ZuulFilter {
 				logger.info(String.format("Token:%s",token));
 				ctx.addZuulRequestHeader("Authorization", token);
 				ctx.addZuulRequestHeader("Cloud-Zuul", "true");
+				//ctx.addZuulRequestHeader("appCode", request.getHeader("appCode"));
 				ctx.setSendZuulResponse(true);// 对该请求进行路由  
 	            ctx.setResponseStatusCode(200);
 			}
@@ -81,7 +82,7 @@ public class AuthorizationFilter extends ZuulFilter {
     private void setErrorResponse(RequestContext ctx,String errorCode){
     	ctx.setSendZuulResponse(false);// 过滤该请求，不对其进行路由  
         ctx.setResponseStatusCode(401);// 返回错误码  
-        Map<String,Object> map=new HashMap<String,Object>();
+        Map<String,Object> map=new HashMap<String,Object>(2);
         map.put("status", 401);
         map.put("errorCode", errorCode);
         ctx.setResponseBody(JSON.toJSONString(map));

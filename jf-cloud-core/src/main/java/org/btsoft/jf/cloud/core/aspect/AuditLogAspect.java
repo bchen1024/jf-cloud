@@ -3,6 +3,8 @@ package org.btsoft.jf.cloud.core.aspect;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +17,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.btsoft.jf.cloud.core.annotation.JAuditLog;
 import org.btsoft.jf.cloud.core.annotation.JAuditModul;
-import org.btsoft.jf.cloud.core.base.entity.AuditLog;
-import org.btsoft.jf.cloud.core.base.service.IAdminService;
+import org.btsoft.jf.cloud.core.base.service.ICommonService;
 import org.btsoft.jf.cloud.core.context.JFCloud;
 import org.btsoft.jf.cloud.core.util.RequestUtils;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class AuditLogAspect {
 	protected static final ThreadLocal<Long> LOCAL_AUDIT = new ThreadLocal<Long>();
 
 	@Autowired
-	private IAdminService service;
+	private ICommonService service;
 
 	@Pointcut("@annotation(org.btsoft.jf.cloud.core.annotation.JAuditLog)")
 	public void jAuditLog() {
@@ -70,8 +71,9 @@ public class AuditLogAspect {
 			Method targetMethod = methodSignature.getMethod();
 			Class<?> clazz = joinPoint.getTarget().getClass();
 
-			String modul = clazz.getSimpleName();
+			Map<String,Object> log=new HashMap<String,Object>(10);
 			// 如果存在JAuditModul注解，从注解中获取模块名
+			String modul = clazz.getSimpleName();
 			if (clazz.isAnnotationPresent(JAuditModul.class)) {
 				// 获取权限编码
 				JAuditModul jm = clazz.getAnnotation(JAuditModul.class);
@@ -79,51 +81,65 @@ public class AuditLogAspect {
 					modul = jm.modul();
 				}
 			}
+			log.put("logModul", modul);
+			log.put("logFullName", clazz.getName()+"."+targetMethod.getName());
 
-			String type = targetMethod.getName();
+			String method = targetMethod.getName();
 			JAuditLog ja = targetMethod.getAnnotation(JAuditLog.class);
 			if (!StringUtils.isEmpty(ja.type())) {
-				type = ja.type();
+				method = ja.type();
 			}
-
+			log.put("logMethod", method);
+			
 			ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
 					.getRequestAttributes();
 			HttpServletRequest request = requestAttributes.getRequest();
-			AuditLog log = new AuditLog();
-			log.setAppCode(JFCloud.getAppCode());
-			log.setLogType("audit");
-			//审计日期
-			log.setLogTime(new Date(startTime));
-			log.setLogStartTime(new Date(startTime));
-			log.setLogEndTime(new Date(endTime));
-			log.setLogAccount("chenbin");
+			log.put("logClient", RequestUtils.getClient(request));
+			log.put("logUrl", request.getRequestURI());
 			
+			
+			//AuditLog log = new AuditLog();
+			log.put("appCode", JFCloud.getAppCode());
+			log.put("logType", "audit");
+			log.put("logAccount", "chenbin");
+			this.buildAuditLogTime(log, startTime, endTime);
 			//主机名和ip
 			InetAddress inet=RequestUtils.getInetAddress(request);
 			if(inet!=null){
-				log.setLogIp(inet.getHostAddress());
-				log.setLogHost(inet.getHostName());
+				log.put("logIp", inet.getHostAddress());
+				log.put("logHost", inet.getHostName());
 			}else{
-				log.setLogIp("Unknown");
-				log.setLogHost("Unknown");
+				log.put("logIp", "Unknown");
+				log.put("logHost", "Unknown");
 			}
-			log.setLogClient(RequestUtils.getClient(request));
 			
-			log.setLogFullName(clazz.getName()+"."+targetMethod.getName());
-			log.setLogModul(modul);
-			log.setLogMethod(type);
-			log.setLogCost(endTime-startTime);
-			log.setLogUrl(request.getRequestURL().toString());
 			String message=ja.message();
 			if(StringUtils.isEmpty(message)){
-				log.setLogMessage(JSON.toJSONString(joinPoint.getArgs()));
+				log.put("logMessage", JSON.toJSONString(joinPoint.getArgs()));
 			}else{
-				log.setLogMessage(message);
+				log.put("logMessage", message);
 			}
 			service.auditLog(log);
+			logger.debug("Audit log end...");
 		} catch (Exception e) {
 			logger.error("audit log is error:"+e.getMessage());
 		}
+	}
+	
+	/**
+	 * 构建审计日期
+	 * @param log
+	 * @param startTime
+	 * @param endTime
+	 * @autor chenbin
+	 * @date 2018-12-09 19:18
+	 */
+	private void buildAuditLogTime(Map<String, Object> log,Long startTime,Long endTime) {
+		//审计日期
+		log.put("logTime", new Date(startTime));
+		log.put("logStartTime", new Date(startTime));
+		log.put("logEndTime", new Date(endTime));
+		log.put("logCost", endTime-startTime);
 	}
 
 }

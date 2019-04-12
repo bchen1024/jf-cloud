@@ -2,11 +2,10 @@ package org.btsoft.jf.cloud.monitor.service.impl;
 
 import java.util.List;
 
-import org.btsoft.jf.cloud.core.auth.context.RequestContext;
 import org.btsoft.jf.cloud.core.base.dto.PageDTO;
-import org.btsoft.jf.cloud.core.base.entity.AuditLog;
-import org.btsoft.jf.cloud.core.base.result.PageResult;
+import org.btsoft.jf.cloud.core.base.entity.PageResult;
 import org.btsoft.jf.cloud.core.util.PageResultUtils;
+import org.btsoft.jf.cloud.monitor.entity.AuditLog;
 import org.btsoft.jf.cloud.monitor.mapper.IAuditLogMapper;
 import org.btsoft.jf.cloud.monitor.service.IAuditLogService;
 import org.springframework.beans.factory.annotation.Autowired;

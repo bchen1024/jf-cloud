@@ -2,7 +2,7 @@ package org.btsoft.jf.cloud.core.exception;
 
 import java.util.List;
 
-import org.btsoft.jf.cloud.core.base.result.CommonResult;
+import org.btsoft.jf.cloud.core.base.entity.CommonResult;
 import org.btsoft.jf.cloud.core.util.CommonResultUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -35,6 +35,13 @@ public class CommonExceptionHandler {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public <T> CommonResult<T> handleException(ApplicationException e) {
 		return CommonResultUtils.fail(e.getHttpCode(),e.getErrorCode(), e.getMessage(), e.getArgs());
+	}
+	
+	@ExceptionHandler(ApplicationI18nException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public <T> CommonResult<T> handleException(ApplicationI18nException e) {
+		return CommonResultUtils.fail(e.getHttpCode(),e.getErrorCode(), e.getMessage(), e.getArgs(),true);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)

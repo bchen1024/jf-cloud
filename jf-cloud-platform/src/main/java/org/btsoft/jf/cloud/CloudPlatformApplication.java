@@ -4,25 +4,24 @@ import javax.servlet.Filter;
 
 import org.btsoft.jf.cloud.core.web.filter.CloudRequestContextFilter;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.client.RestTemplate;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * 云平台启动类
+ * @author chenbin
+ * @date 2018-12-07 19:14
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement
 @EnableSwagger2
-@Configuration
-@EnableAutoConfiguration
 @EnableAsync
 public class CloudPlatformApplication {
 
@@ -46,11 +45,5 @@ public class CloudPlatformApplication {
     @Bean(name = "cloudRequestContextFilter")
     public Filter cloudRequestContextFilter() {
         return new CloudRequestContextFilter();
-    }
-	
-	@Bean
-    @LoadBalanced
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.btsoft.jf.cloud.core.base.dto.PageDTO;
-import org.btsoft.jf.cloud.core.base.result.PageResult;
+import org.btsoft.jf.cloud.core.base.entity.PageResult;
 import org.btsoft.jf.cloud.core.base.vo.PageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,16 @@ public class PageResultUtils {
 	public static <T> PageResult<T> toPageResult(List<T> list,PageDTO pageDTO){
 		PageVO pageVO=new PageVO();
 		BeanUtils.copyProperties(pageDTO, pageVO);
+		PageInfo<T> pageInfo=new PageInfo<>(list);
+		pageVO.setTotal(pageInfo.getTotal());
+		PageResult<T> result=new PageResult<>(list, pageVO);
+		return result;
+	}
+	
+	public static <T> PageResult<T> toPageResult(List<T> list,int curPage,int pageSize){
+		PageVO pageVO=new PageVO();
+		pageVO.setCurPage(curPage);
+		pageVO.setPageSize(pageSize);
 		PageInfo<T> pageInfo=new PageInfo<>(list);
 		pageVO.setTotal(pageInfo.getTotal());
 		PageResult<T> result=new PageResult<>(list, pageVO);

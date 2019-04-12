@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.btsoft.jf.cloud.core.base.entity.AuditLog;
+import org.btsoft.jf.cloud.monitor.entity.AuditLog;
 
 /**
  * 

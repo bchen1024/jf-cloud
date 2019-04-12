@@ -1,40 +1,39 @@
 package org.btsoft.jf.cloud.core.base.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.btsoft.jf.cloud.core.auth.context.RequestContext;
-import org.btsoft.jf.cloud.core.auth.context.RequestUser;
-import org.btsoft.jf.cloud.core.exception.ApplicationException;
+import org.btsoft.jf.cloud.core.auth.user.UserInfo;
 
-public class BaseEntity extends BaseAuditEntity {
-	
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+/**
+ * 实体基类
+ * @author chenbin
+ * @date 2018-11-27 22:39
+ */
+@JsonIgnoreProperties(value= {"currentUserId","currentLanguage"})
+public class BaseEntity extends AuditEntity {
+
 	private static final long serialVersionUID = -133258962375151449L;
+	
+	/**
+	 * 当前用户id
+	 */
+	private Long currentUserId;
+	
+	private String currentLanguage;
 
-    /**
-     * 扩展属性
-     */
-    private Map<String, Object> attribute = new HashMap<>();
-
-    public Long getCurrentUserId() {
-    	RequestContext rc=RequestContext.getCurrent();
-    	RequestUser user=rc.getUser();
-    	if(user==null){
-    		throw new ApplicationException(401, "exception.user.notExists","Unable to log in to the current user");
-    	}
-    	return user.getUserId();
-    }
-    
-    public String getCurrentLanguage(){
-    	return "zh_CN";
-    }
-
-	public Map<String, Object> getAttribute() {
-		return attribute;
+	public Long getCurrentUserId() {
+		if (this.currentUserId == null) {
+			RequestContext rc = RequestContext.getCurrent();
+			UserInfo user = rc.getUser();
+			this.currentUserId = user.getUserId();
+		}
+		return this.currentUserId;
 	}
 
-	public void setAttribute(Map<String, Object> attribute) {
-		this.attribute = attribute;
+	public String getCurrentLanguage() {
+		this.currentLanguage="zh_CN";
+		return currentLanguage;
 	}
-    
+
 }

@@ -1,8 +1,8 @@
 package org.btsoft.jf.cloud.monitor.service;
 
 import org.btsoft.jf.cloud.core.base.dto.PageDTO;
-import org.btsoft.jf.cloud.core.base.entity.AuditLog;
-import org.btsoft.jf.cloud.core.base.result.PageResult;
+import org.btsoft.jf.cloud.core.base.entity.PageResult;
+import org.btsoft.jf.cloud.monitor.entity.AuditLog;
 
 /**
  * 

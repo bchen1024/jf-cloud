@@ -2,6 +2,8 @@ package org.btsoft.jf.cloud.core.base.vo;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * 
  * @author chenbin
@@ -14,54 +16,59 @@ public class PageVO implements Serializable {
 	/**
 	 * 当前第几页
 	 */
-	private int curPage = 1;
+	private Integer curPage;
 
 	/**
 	 * 每页大小
 	 */
-	private int pageSize=15;
+	private Integer pageSize;
 
 	/**
 	 * 总记录数
 	 */
-	private long total;
+	private Long total;
 
 	/**
 	 * 总页数
 	 */
-	private int totalPages;
+	private Integer totalPages;
 
-	public int getCurPage() {
+	public Integer getCurPage() {
 		return curPage;
 	}
 
-	public void setCurPage(int curPage) {
+	public void setCurPage(Integer curPage) {
 		this.curPage = curPage;
 	}
 
-	public int getPageSize() {
+	public Integer getPageSize() {
 		return pageSize;
 	}
 
-	public void setPageSize(int pageSize) {
+	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
 
-	public long getTotal() {
+	public Long getTotal() {
 		return total;
 	}
 
-	public void setTotal(long total) {
+	public void setTotal(Long total) {
 		this.total = total;
 	}
 
-	public int getTotalPages() {
+	public Integer getTotalPages() {
 		this.totalPages = (int) Math.floor((double) ((this.total + this.pageSize - 1) / this.pageSize));
 		return totalPages;
 	}
 
-	public void setTotalPages(int totalPages) {
+	public void setTotalPages(Integer totalPages) {
 		this.totalPages = totalPages;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

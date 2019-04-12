@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.btsoft.jf.cloud.security.user.mapper.IUserMapper">
+	<resultMap id="sqlResultMap"
+		type="org.btsoft.jf.cloud.security.user.entity.User">
+		<result column="enable_flag" property="enableFlag" />
+		<result column="create_by" property="createBy" />
+		<result column="creation_date" property="creationDate" />
+		<result column="last_update_by" property="lastUpdateBy" />
+		<result column="last_updation_date" property="lastUpdationDate" />
+
+		<result column="user_id" property="userId" />
+		<result column="user_account" property="userAccount" />
+		<result column="user_name" property="userName" />
+		<result column="user_email" property="userEmail" />
+		<result column="user_tel" property="userTel" />
+		<result column="employee_no" property="employeeNo" />
+		<result column="user_type" property="userType" />
+		<result column="user_status" property="userStatus" />
+		<result column="password" property="password" />
+		<result column="pwd_error" property="pwdError" />
+		<result column="lock_time" property="lockTime" />
+		<result column="pwd_update_time" property="pwdUpdateTime" />
+	</resultMap>
+
+	<sql id="base_sql">
+		select
+		t.user_id,
+		t.user_account,
+		t.user_name,
+		t.user_email,
+		t.user_tel,
+		t.employee_no,
+		t.user_type,
+		t.user_status,
+		t.enable_flag,
+		t.create_by,
+		t.creation_date,
+		t.last_update_by,
+		t.last_updation_date,
+		t.pwd_error,
+		t.lock_time,
+		t.pwd_update_time,
+		t.password
+		from sys_user_t t
+	</sql>
+
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+			<if test='vo.userAccount!=null and vo.userAccount!=""'>
+				and t.user_account like
+				concat('%',trim(#{vo.userAccount,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test='vo.userName!=null and vo.userName!=""'>
+				and t.user_name like
+				concat('%',trim(#{vo.userName,jdbcType=VARCHAR}),'%')
+			</if>
+		</trim>
+	</sql>
+
+	<insert id="createSingle">
+		insert into sys_user_t (
+		user_account,
+		user_name,
+		password,
+		user_email,
+		user_tel,
+		employee_no,
+		user_type,
+		user_status,
+		create_by,
+		last_update_by
+		)values(
+		#{vo.userAccount,jdbcType=VARCHAR},
+		#{vo.userName,jdbcType=VARCHAR},
+		#{vo.password,jdbcType=VARCHAR},
+		#{vo.userEmail,jdbcType=VARCHAR},
+		#{vo.userTel,jdbcType=VARCHAR},
+		#{vo.employeeNo,jdbcType=VARCHAR},
+		#{vo.userType,jdbcType=VARCHAR},
+		#{vo.userStatus,jdbcType=VARCHAR},
+		#{vo.currentUserId,jdbcType=NUMERIC},
+		#{vo.currentUserId,jdbcType=NUMERIC}
+		)
+	</insert>
+
+	<select id="findSingle" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		<if test='vo.userId!=null'>
+			where t.user_id=#{vo.userId,jdbcType=NUMERIC}
+		</if>
+		<if test='vo.userAccount!=null and vo.userAccount!=""'>
+			where t.user_account=#{vo.userAccount,jdbcType=VARCHAR}
+		</if>
+		<if test='vo.userId==null and (vo.userAccount==null or vo.userAccount=="")'>
+			where 1=2
+		</if>
+	</select>
+
+	<update id="deleteSingle">
+		update sys_user_t t set
+		t.enable_flag='N',
+		t.user_status='D',
+		t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+		t.last_updation_date=now()
+		where t.user_id=#{vo.userId,jdbcType=NUMERIC}
+	</update>
+
+	<update id="deleteMultiple">
+		update sys_user_t t set
+		t.enable_flag='N',
+		t.user_status='D',
+		t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+		t.last_updation_date=now()
+		<if test="vo.list!=null and !vo.list.isEmpty()">
+			<foreach collection="vo.list" item="item"
+				open="where t.user_id in(" separator="," close=")">
+				#{item.userId,jdbcType=NUMERIC}
+			</foreach>
+		</if>
+		<if test="list==null or list.isEmpty()">
+			where 1=2
+		</if>
+	</update>
+
+	<update id="patchSingle">
+		update sys_user_t t set
+		<!-- 更新密码错误次数 -->
+		<if test="vo.pwdError!=null">
+			t.pwd_error=#{vo.pwdError,jdbcType=NUMERIC},
+		</if>
+		<!-- 锁定用户 -->
+		<if test='vo.userStatus=="L"'>
+			t.lock_time=now(),
+			t.user_status='L',
+		</if>
+		<!-- 解锁用户 -->
+		<if test='vo.userStatus=="Y"'>
+			t.lock_time=NULL,
+			t.user_status='Y',
+		</if>
+		t.last_updation_date=now()
+		where
+		t.user_id=#{vo.userId,jdbcType=NUMERIC}
+		<if test='vo.userStatus=="Y"'>
+			and t.user_status='L'
+		</if>
+	</update>
+
+	<select id="findList" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		<include refid="base_condition" />
+	</select>
+	
+	<select id="findUserListByUserId" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		<if test="list!=null and !list.isEmpty()">
+			<foreach collection="list" item="item"
+				open="where t.user_id in(" close=")" separator=",">
+				#{item,jdbcType=BIGINT}
+			</foreach>
+		</if>
+		<if test="list==null or list.isEmpty()">
+			where 1=2
+		</if>
+	</select>
+	
+	<select id="findMaxEmplyeeNo" resultType="long">
+		select max(t.employee_no) from sys_user_t t
+	</select>
+	
+	<update id="updatePassword">
+		update sys_user_t t set
+			t.password=#{vo.password,jdbcType=VARCHAR},
+			t.pwd_update_time=now(),
+			t.last_updation_date=now()
+		where t.user_id=#{vo.userId,jdbcType=NUMERIC}
+	</update>
+</mapper>

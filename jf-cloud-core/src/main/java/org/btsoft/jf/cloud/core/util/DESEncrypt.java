@@ -68,7 +68,8 @@ public class DESEncrypt {
 		byte[] bt = new byte[strs.length];
 		for (int i = 0; i < bt.length; i++) {
 			ch = strs[i].charAt(0);
-			if ((ch >= 'Q' && ch <= 'Z') || (ch >= 'q' && ch <= 'z')) {
+			boolean flag=(ch >= 'Q' && ch <= 'Z') || (ch >= 'q' && ch <= 'z');
+			if (flag) {
 				bt[i] = (byte) -Byte.parseByte(strs[i].substring(1), 16);
 			}
 			else {
@@ -119,9 +120,10 @@ public class DESEncrypt {
 			expirationTime = EXPIRATION_TIME;
 		}
 		Date expirationDate = new Date(now + expirationTime);
-		JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")//
-				.setHeaderParam("alg", "HS256")// 加密算法
-				.setIssuedAt(nowDate) // 设置jwt生成时间
+		//设置加密算法,生成时间
+		JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
+				.setHeaderParam("alg", "HS256")
+				.setIssuedAt(nowDate)
 				.setNotBefore(nowDate).setExpiration(expirationDate).signWith(signatureAlgorithm, signingKey)
 				.claim("userAccount", userAccount);
 		if (userAccount != null) {
@@ -135,5 +137,9 @@ public class DESEncrypt {
 		Claims claim = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(signingKeyStr))
 				.parseClaimsJws(jwt).getBody();
 		return claim;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(DESEncrypt.dncrypt("19M17G35H2DI5O27HR57JQ53K4DG1DI48N51OY34I2DPT2ALYA"));
 	}
 }

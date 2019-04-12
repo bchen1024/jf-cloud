@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.security.app.mapper.IAppUserMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.security.app.entity.AppUser">
+		<result column="enable_flag" property="enableFlag" />
+		<result column="create_by" property="createBy" />
+		<result column="creation_date" property="creationDate" />
+		<result column="last_update_by" property="lastUpdateBy" />
+		<result column="last_updation_date" property="lastUpdationDate" />
+
+		<result column="app_id" property="appId" />
+		<result column="user_id" property="userId" />
+		<result column="id" property="id" />
+	</resultMap>
+
+	<delete id="deleteMultiple">
+		delete from sys_user_app_rt where
+		<foreach collection="list" item="item" open=" id in("
+			separator="," close=")">
+			#{item.id,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
+	
+	<select id="findAppListByUser" resultType="hashmap">
+		SELECT 
+		    APP.APP_ID   AS "appId",
+		    APP.APP_CODE AS "appCode",
+		    APP.APP_NAME AS "appName",
+		    APP.APP_DESC AS "appDesc"
+		FROM
+		    SYS_APP_USER_RT AU
+		        INNER JOIN
+		    SYS_APP_T APP ON APP.APP_ID = AU.APP_ID AND APP.ENABLE_FLAG='Y'
+		WHERE
+		    AU.ENABLE_FLAG = 'Y' AND AU.USER_ID = #{userId,jdbcType=NUMERIC}
+	</select>
+
+</mapper>

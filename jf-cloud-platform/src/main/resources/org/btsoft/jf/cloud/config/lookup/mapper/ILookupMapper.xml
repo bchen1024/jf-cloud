@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.btsoft.jf.cloud.config.lookup.mapper.ILookupMapper">
+	<resultMap id="sqlResultMap" type="org.btsoft.jf.cloud.config.lookup.entity.Lookup">
+		<result column="app_code" property="appCode" />
+		<result column="enable_flag" property="enableFlag" />
+		<result column="create_by" property="createBy" />
+		<result column="creation_date" property="creationDate" />
+		<result column="last_update_by" property="lastUpdateBy" />
+		<result column="last_updation_date" property="lastUpdationDate" />
+
+		<result column="code_id" property="codeId" />
+		<result column="code_no" property="codeNo" />
+		<result column="code_name" property="codeName" />
+		<result column="code_type" property="codeType" />
+		<result column="code_desc" property="codeDesc" />
+		<result column="code_parent" property="codeParent" />
+	</resultMap>
+
+	<sql id="base_sql">
+		select
+		t.code_id,
+		t.code_no,
+		t.code_name,
+		t.code_type,
+		t.code_desc,
+		t.code_parent,
+		t.app_code,
+		t.enable_flag,
+		t.create_by,
+		t.creation_date,
+		t.last_update_by,
+		t.last_updation_date
+		from sys_lookup_t
+		t
+	</sql>
+
+	<sql id="base_condition">
+		<trim prefix="where" prefixOverrides="and || or">
+			t.app_code=#{vo.appCode,jdbcType=VARCHAR}
+			<if test='vo.codeNo!=null and vo.codeNo!=""'>
+				and t.code_no like
+				concat('%',trim(#{vo.codeNo,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test='vo.codeName!=null and vo.codeNo!=""'>
+				and t.code_name like
+				concat('%',trim(#{vo.codeName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test='vo.codeType!=null and vo.codeType!=""'>
+				and t.code_type=#{vo.codeType,jdbcType=NUMERIC}
+			</if>
+		</trim>
+	</sql>
+
+	<insert id="createSingle">
+		insert into sys_lookup_t (
+		code_no,
+		code_name,
+		code_type,
+		code_desc,
+		code_parent,
+		app_code,
+		create_by,
+		last_update_by
+		)values(
+		#{vo.codeNo,jdbcType=VARCHAR},
+		#{vo.codeName,jdbcType=VARCHAR},
+		#{vo.codeType,jdbcType=VARCHAR},
+		#{vo.codeDesc,jdbcType=VARCHAR},
+		#{vo.codeParent,jdbcType=VARCHAR},
+		#{vo.appCode,jdbcType=VARCHAR},
+		#{vo.currentUserId,jdbcType=NUMERIC},
+		#{vo.currentUserId,jdbcType=NUMERIC}
+		)
+	</insert>
+
+	<select id="findSingle" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		where t.code_id=#{vo.codeId,jdbcType=NUMERIC}
+	</select>
+
+	<delete id="deleteSingle">
+		delete from sys_lookup_t where
+		code_id=#{vo.codeId,jdbcType=NUMERIC}
+	</delete>
+
+	<delete id="deleteMultiple">
+		delete from sys_lookup_t where
+		<foreach collection="vo.list" item="item" open=" code_id in("
+			separator="," close=")">
+			#{item.codeId,jdbcType=NUMERIC}
+		</foreach>
+	</delete>
+
+	<update id="updateSingle">
+		update sys_lookup_t t set
+		t.code_no=#{vo.codeNo,jdbcType=VARCHAR},
+		t.code_name=#{vo.codeName,jdbcType=VARCHAR},
+		t.code_type=#{vo.codeType,jdbcType=VARCHAR},
+		t.code_desc=#{vo.codeDesc,jdbcType=VARCHAR},
+		t.code_parent=#{vo.codeParent,jdbcType=VARCHAR},
+		t.last_update_by=#{vo.currentUserId,jdbcType=NUMERIC},
+		t.last_updation_date=now()
+		where
+		t.code_id=#{vo.codeId,jdbcType=NUMERIC}
+	</update>
+
+	<select id="findList" resultMap="sqlResultMap">
+		<include refid="base_sql" />
+		<include refid="base_condition" />
+	</select>
+</mapper>

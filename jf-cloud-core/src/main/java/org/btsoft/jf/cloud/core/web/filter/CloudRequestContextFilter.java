@@ -8,20 +8,17 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 import org.btsoft.jf.cloud.core.auth.context.RequestContext;
 import org.btsoft.jf.cloud.core.auth.context.RequestManagement;
-import org.btsoft.jf.cloud.core.auth.context.RequestUser;
-import org.btsoft.jf.cloud.core.auth.entity.UserInfo;
-import org.btsoft.jf.cloud.core.base.result.CommonResult;
+import org.btsoft.jf.cloud.core.auth.user.UserInfo;
+import org.btsoft.jf.cloud.core.base.entity.CommonResult;
 import org.btsoft.jf.cloud.core.base.service.IUserQueryService;
 import org.btsoft.jf.cloud.core.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 
 /**
  * 
@@ -43,13 +40,14 @@ public class CloudRequestContextFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest req=(HttpServletRequest)request;
+		logger.debug(req.getRequestURI());
 		String cloudZuul=req.getHeader("Cloud-Zuul");
 		if("true".equals(cloudZuul)){
 			//获取鉴权token
 			String token=req.getHeader("Authorization");
 			CommonResult<UserInfo> cr= userQueryService.findUserByToken(token);
 			RequestContext rc=new RequestContext();
-			RequestUser user=EntityUtils.copyProperties(cr.getData(), RequestUser.class);
+			UserInfo user=EntityUtils.copyProperties(cr.getData(), UserInfo.class);
 			rc.setUser(user);
 			RequestManagement.setCurrent(rc);
 		}
