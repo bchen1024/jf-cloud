@@ -48,3 +48,4 @@ logs
 /jf-cloud-admin-server/.mvn/wrapper/maven-wrapper.properties
 /jf-cloud-admin-server/mvnw
 /jf-cloud-admin-server/mvnw.cmd
+maven-wrapper.jar
