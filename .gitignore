@@ -44,3 +44,7 @@ npm-debug.log
 /jf-cloud-config-server/.mvn
 logs
 .settings
+/jf-cloud-admin-server/.mvn/wrapper/maven-wrapper.jar
+/jf-cloud-admin-server/.mvn/wrapper/maven-wrapper.properties
+/jf-cloud-admin-server/mvnw
+/jf-cloud-admin-server/mvnw.cmd

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.btsoft.jf.cloud.core.auth.user.UserInfo;
 import org.btsoft.jf.cloud.core.base.entity.BatchEntity;
 import org.btsoft.jf.cloud.core.base.entity.CommonResult;
 import org.btsoft.jf.cloud.core.base.entity.PageResult;
