@@ -1,4 +1,4 @@
-package org.btsoft.jf.cloud.admin;
+package org.btsoft.jf.cloud.admin.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
