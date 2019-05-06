@@ -5,12 +5,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.btsoft.jf.cloud.zuul.util.ZuulUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSON;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
@@ -23,6 +29,12 @@ import com.netflix.zuul.context.RequestContext;
 public class AuthorizationFilter extends ZuulFilter {
 
     private final static Logger logger= LoggerFactory.getLogger(AuthorizationFilter.class);
+    
+    @Autowired
+	private RestTemplate restTempate;
+    
+    @Value("${jf.auth.user.url:http://jf-cloud-platform/platform/auth/user}")
+    private String authUserUrl;
     
     @Override
     public String filterType() {
@@ -51,40 +63,41 @@ public class AuthorizationFilter extends ZuulFilter {
             ctx.setResponseBody("success");
             return null;
         }
-        logger.debug(String.format("[%s] %s",request.getMethod(),uri));
+        logger.info("Request Method:{},Request Url:{}", method,uri);
         
         //跳过鉴权
-        if(uri.contains("/public/") || uri.contains("/auth/") || uri.contains("swagger") || uri.contains("api-docs")){
+        if(ZuulUtils.skipAuthentication(request)){
         	ctx.setSendZuulResponse(true);// 对该请求进行路由  
             ctx.setResponseStatusCode(200);
         }else{
-        	//获取鉴权token，优先从Header中获取，取不到再从入
-			String token=request.getHeader("Authorization");
-			if(StringUtils.isEmpty(token)) {
-				token=request.getParameter("token");
-			}
-			
+        	String token=ZuulUtils.getToken(request);
 			//如果token为空，无权限
 			if(StringUtils.isEmpty(token)) {
-				this.setErrorResponse(ctx, "zuul.token.null");
+				ZuulUtils.zuulResponse(ctx, false, 401, "zuul.token.null", "Rquest Header's token cannot be empty");
 			}else{
-				logger.info(String.format("Token:%s",token));
+				/*
+				 * String userInofStr=this.getUserInfo(token);
+				 * if(!StringUtils.isEmpty(userInofStr)) {
+				 * ctx.addZuulRequestHeader("x-user-info", userInofStr); }
+				 */
 				ctx.addZuulRequestHeader("Authorization", token);
-				ctx.addZuulRequestHeader("Cloud-Zuul", "true");
-				//ctx.addZuulRequestHeader("appCode", request.getHeader("appCode"));
-				ctx.setSendZuulResponse(true);// 对该请求进行路由  
+				ctx.addZuulRequestHeader("x-cloud-zuul", "true");
+				if(StringUtils.isEmpty(request.getHeader("appCode"))) {
+					ctx.addZuulRequestHeader("x-app-code", request.getHeader("appCode"));
+				}
+				ctx.setSendZuulResponse(true);
 	            ctx.setResponseStatusCode(200);
 			}
         }
         return null;
     }
     
-    private void setErrorResponse(RequestContext ctx,String errorCode){
-    	ctx.setSendZuulResponse(false);// 过滤该请求，不对其进行路由  
-        ctx.setResponseStatusCode(401);// 返回错误码  
-        Map<String,Object> map=new HashMap<String,Object>(2);
-        map.put("status", 401);
-        map.put("errorCode", errorCode);
-        ctx.setResponseBody(JSON.toJSONString(map));
+    private String getUserInfo(String token) {
+    	Map<String, Object> userTokenDTO = new HashMap<String, Object>(1);
+		userTokenDTO.put("token", token);
+		HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<Map<String, Object>>(userTokenDTO);
+		ResponseEntity<String> rn = restTempate.exchange(authUserUrl, HttpMethod.POST,
+				requestEntity, String.class);
+		return rn.getBody();
     }
 }
