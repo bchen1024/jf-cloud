@@ -2,7 +2,7 @@ package org.btsoft.jf.cloud.security.auth.vo;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.btsoft.jf.cloud.core.auth.user.UserInfo;
 
 /**

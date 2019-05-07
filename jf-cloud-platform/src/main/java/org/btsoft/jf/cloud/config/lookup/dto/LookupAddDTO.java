@@ -1,6 +1,6 @@
 package org.btsoft.jf.cloud.config.lookup.dto;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.btsoft.jf.cloud.core.base.dto.AppDTO;
 import org.hibernate.validator.constraints.NotBlank;
 

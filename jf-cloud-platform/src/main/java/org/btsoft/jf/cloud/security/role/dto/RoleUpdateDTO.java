@@ -2,7 +2,7 @@ package org.btsoft.jf.cloud.security.role.dto;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * 

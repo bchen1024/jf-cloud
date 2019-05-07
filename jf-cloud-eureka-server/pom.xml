@@ -16,11 +16,12 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />
 	</parent>
 
 	<properties>
 		<spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
+		<jasypt.version>1.18</jasypt.version>
 	</properties>
 
 	<dependencies>
@@ -29,9 +30,9 @@
 			<artifactId>spring-cloud-starter-eureka-server</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -39,7 +40,7 @@
 		<dependency>
 			<groupId>com.github.ulisesbocchio</groupId>
 			<artifactId>jasypt-spring-boot-starter</artifactId>
-			<version>1.18</version>
+			<version>${jasypt.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -58,27 +59,12 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.4.12</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<imageName>jf-cloud-eureka-server</imageName>
-					<baseImage>java</baseImage>
-					<forceTags>true</forceTags>
-					<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
-					<!-- copy the service's jar file from target into the root directory 
-						of the image -->
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
+					<mainClass>org.btsoft.jf.cloud.eureka.server.CloudEurekaServerApplication</mainClass>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
-				</plugin> -->
 		</plugins>
 	</build>
 

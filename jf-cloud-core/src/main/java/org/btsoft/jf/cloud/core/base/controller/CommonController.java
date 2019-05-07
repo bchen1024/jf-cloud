@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.btsoft.jf.cloud.core.base.entity.CommonResult;
 import org.btsoft.jf.cloud.core.base.service.ICommonService;
-import org.btsoft.jf.cloud.core.util.CommonResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,11 +26,6 @@ public class CommonController {
 	@GetMapping("/permission/list")
 	public CommonResult<List<Map<String,String>>> listPermission(){
 		return service.listPermission();
-	}
-	
-	@GetMapping("/checkAppStatus")
-	public CommonResult<String> checkAppStatus(){
-		return CommonResultUtils.success("Y");
 	}
 	
 	@PutMapping("/mapper/reload")

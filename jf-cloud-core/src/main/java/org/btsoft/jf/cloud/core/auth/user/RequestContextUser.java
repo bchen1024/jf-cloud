@@ -27,6 +27,8 @@ public class RequestContextUser implements Serializable {
 
 	private Map<String, Object> globalPersonalized;
 	
+	private Map<String,Object> env;
+	
 	public UserInfo getUser() {
 		return user;
 	}
@@ -81,6 +83,14 @@ public class RequestContextUser implements Serializable {
 
 	public void setGlobalPersonalized(Map<String, Object> globalPersonalized) {
 		this.globalPersonalized = globalPersonalized;
+	}
+
+	public Map<String, Object> getEnv() {
+		return env;
+	}
+
+	public void setEnv(Map<String, Object> env) {
+		this.env = env;
 	}
 
 }

@@ -3,7 +3,7 @@ package org.btsoft.jf.cloud.security.token.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * @desc 用户Token VO对象

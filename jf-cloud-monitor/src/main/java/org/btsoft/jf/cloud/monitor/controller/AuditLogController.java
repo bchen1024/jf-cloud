@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018年6月16日 下午11:46:23
  */
 @RestController
-@JResource(code = "auditLog", descCN = "审计日志", descEN = "Audit Log Mgt")
+@JResource(code = "auditLog", descCN = "审计日志", descEN = "Audit Log Mgt",appCode="jf-cloud-platform")
 @RequestMapping("/auditLog")
 public class AuditLogController {
 	

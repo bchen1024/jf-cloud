@@ -24,4 +24,5 @@ public @interface JOperator {
 	public String descEN();// 权限英文描述
 
 	public SecurityEnums security() default SecurityEnums.LoginUser;
+	
 }

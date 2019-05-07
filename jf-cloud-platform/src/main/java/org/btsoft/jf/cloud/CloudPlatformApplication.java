@@ -3,13 +3,16 @@ package org.btsoft.jf.cloud;
 import javax.servlet.Filter;
 
 import org.btsoft.jf.cloud.core.web.filter.CloudRequestContextFilter;
+import org.btsoft.jf.cloud.core.web.interceptor.RestTemplateRequestInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.client.RestTemplate;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -28,6 +31,14 @@ public class CloudPlatformApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CloudPlatformApplication.class, args);
 	}
+	
+	@Bean
+	@LoadBalanced
+    public RestTemplate restTemplate() {
+		RestTemplate restTemplate=new RestTemplate();
+		restTemplate.getInterceptors().add(new RestTemplateRequestInterceptor());
+        return restTemplate;
+    }
 	
 	/**
      * 配置过滤器

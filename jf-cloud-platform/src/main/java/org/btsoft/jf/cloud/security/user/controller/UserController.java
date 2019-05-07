@@ -6,10 +6,12 @@ import java.util.Map;
 import org.btsoft.jf.cloud.core.annotation.JAuditLog;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;
+import org.btsoft.jf.cloud.core.auth.user.RequestContextUser;
 import org.btsoft.jf.cloud.core.auth.user.UserInfo;
 import org.btsoft.jf.cloud.core.base.entity.CommonResult;
 import org.btsoft.jf.cloud.core.base.entity.PageResult;
 import org.btsoft.jf.cloud.core.constants.ControllerContants;
+import org.btsoft.jf.cloud.security.user.dto.CurrentUserQueryDTO;
 import org.btsoft.jf.cloud.security.user.dto.UserAddDTO;
 import org.btsoft.jf.cloud.security.user.dto.UserQueryDTO;
 import org.btsoft.jf.cloud.security.user.service.IUserService;
@@ -53,5 +55,10 @@ public class UserController {
 	@JAuditLog
 	public CommonResult<Integer> createSingle(@RequestBody UserAddDTO dto){
 		return service.createSingle(dto);
+	}
+	
+	@PostMapping("/current")
+	public CommonResult<RequestContextUser> findCurrentUser(@RequestBody CurrentUserQueryDTO dto){
+		return service.findCurrentUser(dto);
 	}
 }

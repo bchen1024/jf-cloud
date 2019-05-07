@@ -63,6 +63,8 @@ public class TokenServiceImpl implements ITokenService {
 			claims=DESEncrypt.parseJWT(token.getToken(), ssoAuthProperties.getSigningKey());
 		} catch (ExpiredJwtException e) {
 			throw new ApplicationException("sso.auth.token.expired","Token has expired, please login again");
+		}catch(Exception e) {
+			throw new ApplicationException("sso.auth.token.invalid","Token is invalid, please login again");
 		}
 		
 		//根据token获取用户信息

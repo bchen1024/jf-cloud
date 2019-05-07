@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.btsoft.jf.cloud.core.annotation.JOperator;
 import org.btsoft.jf.cloud.core.annotation.JResource;
 import org.btsoft.jf.cloud.core.base.entity.CommonResult;
@@ -49,7 +50,6 @@ public class CommonServiceImpl implements ICommonService {
 		} catch (Exception e) {
 			logger.error("Audit log is error:"+e.getMessage());
 		}
-		
 	}
 
 	@Override
@@ -72,7 +72,11 @@ public class CommonServiceImpl implements ICommonService {
 				resourceMap.put("permissionDescCN", jr.descCN());
 				resourceMap.put("permissionDescEN", jr.descEN());
 				resourceMap.put("permissionType", "resources");
-				resourceMap.put("appCode", JFCloud.getAppCode());
+				String appCode=jr.appCode();
+				if(StringUtils.isEmpty(appCode)) {
+					appCode=JFCloud.getAppCode();
+				}
+				resourceMap.put("appCode", appCode);
 				resourcesList.add(resourceMap);
 				
 				//获取方法级权限配置
@@ -86,7 +90,7 @@ public class CommonServiceImpl implements ICommonService {
 						methodMap.put("permissionDescEN", jo.descEN());
 						methodMap.put("parentCode", jr.code());
 						methodMap.put("permissionType", "method");
-						methodMap.put("appCode", JFCloud.getAppCode());
+						methodMap.put("appCode", appCode);
 						methodList.add(methodMap);
 					}
 				}

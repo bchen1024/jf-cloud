@@ -17,9 +17,6 @@
 		FROM
 			SYS_GROUP_USER_RT GU
 			INNER JOIN SYS_GROUP_T G ON G.GROUP_ID = GU.GROUP_ID AND G.ENABLE_FLAG='Y'
-			<if test="attributes!=null and attributes.appCode!=null">
-	        	AND G.APP_CODE = #{attributes.appCode,jdbcType=VARCHAR}
-	        </if>
 		WHERE GU.ENABLE_FLAG = 'Y' 
 		  AND DATE(NOW()) BETWEEN GU.BEGIN_DATE AND GU.END_DATE
 		  AND GU.USER_ID = #{userId,jdbcType=NUMERIC}

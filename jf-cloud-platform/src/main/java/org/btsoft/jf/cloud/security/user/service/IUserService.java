@@ -3,9 +3,11 @@ package org.btsoft.jf.cloud.security.user.service;
 import java.util.List;
 import java.util.Map;
 
+import org.btsoft.jf.cloud.core.auth.user.RequestContextUser;
 import org.btsoft.jf.cloud.core.auth.user.UserInfo;
 import org.btsoft.jf.cloud.core.base.entity.CommonResult;
 import org.btsoft.jf.cloud.core.base.entity.PageResult;
+import org.btsoft.jf.cloud.security.user.dto.CurrentUserQueryDTO;
 import org.btsoft.jf.cloud.security.user.dto.UserAddDTO;
 import org.btsoft.jf.cloud.security.user.dto.UserQueryDTO;
 import org.btsoft.jf.cloud.security.user.entity.User;
@@ -57,4 +59,13 @@ public interface IUserService{
 	 * @date 2018-12-01 09:06
 	 */
 	CommonResult<Integer> createSingle(UserAddDTO dto);
+	
+	/**
+	 * 查询当前用户信息
+	 * @param dto
+	 * @return
+	 * @autor chenbin
+	 * @date 2018-12-23 00:04
+	 */
+	CommonResult<RequestContextUser> findCurrentUser(CurrentUserQueryDTO dto);
 }

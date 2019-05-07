@@ -21,12 +21,22 @@
 
 	<properties>
 		<spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
+		<jasypt.version>1.18</jasypt.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-config-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>${jasypt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -47,9 +57,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>org.btsoft.jf.cloud.config.server.CloudConfigServerApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

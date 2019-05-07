@@ -3,7 +3,7 @@
  */
 package org.btsoft.jf.cloud.config.property.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.btsoft.jf.cloud.core.base.vo.BaseAppVO;
 
 /**

@@ -1,11 +1,7 @@
 package org.btsoft.jf.cloud.core.configuration;
 
-import org.btsoft.jf.cloud.core.web.interceptor.RestTemplateTokenInterceptor;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * 
@@ -16,12 +12,6 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan({"org.btsoft.jf.cloud.core"})
 public class JFCloudAutoConfiguration {
 	
-	@Bean
-	@LoadBalanced
-    public RestTemplate restTemplate() {
-		RestTemplate restTemplate=new RestTemplate();
-		restTemplate.getInterceptors().add(new RestTemplateTokenInterceptor());
-        return restTemplate;
-    }
+	
 
 }

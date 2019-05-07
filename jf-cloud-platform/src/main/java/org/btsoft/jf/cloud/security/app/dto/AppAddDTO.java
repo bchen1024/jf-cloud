@@ -2,7 +2,7 @@ package org.btsoft.jf.cloud.security.app.dto;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.btsoft.jf.cloud.core.base.dto.AppDTO;
 import org.hibernate.validator.constraints.NotBlank;
 

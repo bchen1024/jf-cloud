@@ -29,6 +29,9 @@ public class RequestUtils {
 				ip = "Unknown";
 			}
 		}
+		if("0:0:0:0:0:0:0:1".equals(ip)) {
+			ip=request.getRemoteAddr();
+		}
 		return ip;
 	}
 	

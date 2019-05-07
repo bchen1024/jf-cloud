@@ -1,6 +1,10 @@
 package org.btsoft.jf.cloud.core.context;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Spring 上下文管理器
@@ -23,5 +27,17 @@ public final class JFCloud {
 	
 	public static String getAppCode(){
 		return context.getEnvironment().getProperty("jf.cloud.appCode");
+	}
+	
+	public static String getCurrentAppCode() {
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
+				.getRequestAttributes();
+		HttpServletRequest request = requestAttributes.getRequest();
+		String appCode=request.getHeader("x-app-code");
+		return appCode;
+	}
+	
+	public static String getEnv() {
+		return context.getEnvironment().getProperty("spring.profiles.active");
 	}
 }

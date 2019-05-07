@@ -1,6 +1,6 @@
 package org.btsoft.jf.cloud.config.lookup.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.btsoft.jf.cloud.core.base.vo.BaseAppVO;
 
 /**

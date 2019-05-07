@@ -41,6 +41,12 @@ public class CloudZuulApplication {
 		return new AuthorizationFilter();
 	}
 
+	/**
+	 * 实现网关跨域功能
+	 * @return
+	 * @autor chenbin
+	 * @date 2019-05-07 20:20
+	 */
 	@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

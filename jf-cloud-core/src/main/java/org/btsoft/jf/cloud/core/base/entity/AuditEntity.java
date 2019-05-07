@@ -2,8 +2,6 @@ package org.btsoft.jf.cloud.core.base.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -40,11 +38,6 @@ public class AuditEntity implements Serializable {
 	 * 最后更新时间
 	 */
 	private Date lastUpdationDate;
-
-	/**
-	 * 扩展属性
-	 */
-	private Map<String, Object> attributes=new HashMap<String, Object>();
 
 	public String getEnableFlag() {
 		return enableFlag;
@@ -84,14 +77,6 @@ public class AuditEntity implements Serializable {
 
 	public void setLastUpdationDate(Date lastUpdationDate) {
 		this.lastUpdationDate = lastUpdationDate;
-	}
-
-	public Map<String, Object> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(Map<String, Object> attributes) {
-		this.attributes = attributes;
 	}
 
 	@Override

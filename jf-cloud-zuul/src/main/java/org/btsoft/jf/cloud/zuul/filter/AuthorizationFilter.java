@@ -1,5 +1,6 @@
 package org.btsoft.jf.cloud.zuul.filter;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class AuthorizationFilter extends ZuulFilter {
     
     @Override
     public String filterType() {
-        return "pre";
+        return FilterConstants.PRE_TYPE;
     }
 
     @Override
@@ -57,13 +59,13 @@ public class AuthorizationFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         String uri=request.getRequestURI();
         String method=request.getMethod();
-        if("OPTIONS".equals(method)) {
+        if(HttpMethod.OPTIONS.matches(method)) {
         	ctx.setSendZuulResponse(false);// 过滤该请求，不对其进行路由  
             ctx.setResponseStatusCode(200);// 返回错误码  
             ctx.setResponseBody("success");
             return null;
         }
-        logger.info("Request Method:{},Request Url:{}", method,uri);
+        logger.info("Method:{},Url:{}", method,uri);
         
         //跳过鉴权
         if(ZuulUtils.skipAuthentication(request)){
@@ -75,11 +77,16 @@ public class AuthorizationFilter extends ZuulFilter {
 			if(StringUtils.isEmpty(token)) {
 				ZuulUtils.zuulResponse(ctx, false, 401, "zuul.token.null", "Rquest Header's token cannot be empty");
 			}else{
-				/*
-				 * String userInofStr=this.getUserInfo(token);
-				 * if(!StringUtils.isEmpty(userInofStr)) {
-				 * ctx.addZuulRequestHeader("x-user-info", userInofStr); }
-				 */
+				
+				String userInofStr=this.getUserInfo(token);
+				if(!StringUtils.isEmpty(userInofStr)) {
+					try {
+						ctx.addZuulRequestHeader("x-user-info", new String(userInofStr.getBytes(),"UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						logger.error("x-user-info set error");
+					} 
+				}
+				 
 				ctx.addZuulRequestHeader("Authorization", token);
 				ctx.addZuulRequestHeader("x-cloud-zuul", "true");
 				if(StringUtils.isEmpty(request.getHeader("appCode"))) {
